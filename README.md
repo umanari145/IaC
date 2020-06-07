@@ -5,19 +5,21 @@
 参考リンク
 https://qiita.com/bunty/items/5ceed66d334db0ff99e8
 
-#### インストール
+### インストール
 ```
 brew install terraform
 terraform --version
 #Terraform v0.12.26でOK
 ```
 
-#### atomプラグイン
+### atomプラグイン
 - language-terraform:シンタックスハイライト(色つけ)
 - linter-terraform-syntax:構文チェック
 - terraform-fmt:整形ツール
 
 下記のコマンドは全てterraformディレクトリにおりて実行する
+
+### terraform コマンド
 
 #### 1 terraform init
 awsのアカウント情報などの初期化をしている<br>
@@ -340,3 +342,21 @@ aws_instance.web1: Destruction complete after 34s
 
 Destroy complete! Resources: 1 destroyed.
 ```
+
+### chart
+インフラ関連の図の資料
+https://www.draw.io/
+
+VPC_diagram
+- VPC
+- Internet Gateway
+- Route table
+- EC2
+
+
+EC2_DB_diagram
+- VPC
+- Internet Gateway
+- Route table
+- EC2
+- RDS(MySQL)

@@ -23,6 +23,7 @@ brew install tfenv
 tfenv --version
 # tfenv 2.2.2
 
+
 #想定のバージョンをインストール
 tfenv list-remote
 # バージョンがずらずらと・・

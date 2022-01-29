@@ -6,16 +6,47 @@
 https://qiita.com/bunty/items/5ceed66d334db0ff99e8
 
 ### インストール
+
+terraform本体のインストール
 ```
 brew install terraform
 terraform --version
 #Terraform v0.12.26でOK
 ```
 
+tfenv(terraformのバージョン切り替え)
+```
+#個別に元々インストールしていた場合は以下のコマンドでアンインストール
+brew unlink terraform
+
+brew install tfenv
+tfenv --version
+# tfenv 2.2.2
+
+#想定のバージョンをインストール
+tfenv list-remote
+# バージョンがずらずらと・・
+#その中で選んでインストール
+tfenv install 1.0.0 
+# インストールずみのバージョンを表記
+tfenv list
+#  1.0.0
+# No default set. Set with 'tfenv use <version>' //まだ設定されていない
+# 実際に仕様
+tfenv use 1.0.0
+
+# 使用後確認するとシンボリックリンクを貼る
+tfenv list
+* 1.0.0 (set by /usr/local/Cellar/tfenv/2.2.2/version)
+```
+
 ### atomプラグイン
 - language-terraform:シンタックスハイライト(色つけ)
 - linter-terraform-syntax:構文チェック
 - terraform-fmt:整形ツール
+
+### vscode
+- Draw.io Integration: drawをエディタ上に表現
 
 下記のコマンドは全てterraformディレクトリにおりて実行する
 

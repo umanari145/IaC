@@ -54,6 +54,8 @@ tfenv list
 ### terraform コマンド
 
 #### 1 terraform init
+
+ec2.tfファイルとvariables.tfを作成し、一番最初に打つコマンド(何もないと動かない)<br>
 awsのアカウント情報などの初期化をしている<br>
 下記のようなメッセージが出ればOK
 ```
@@ -88,6 +90,9 @@ awsアカウントの重複
 ```
 Error: Duplicate provider configuration
 ```
+
+.teffaform.locl.hcl
+このファイルが設定情報を保存しているようなイメージ(composer.jsonなど?)
 
 #### 2 terraform plan
 
@@ -197,6 +202,14 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 Note: You didn't specify an "-out" parameter to save this plan, so Terraform
 can't guarantee that exactly these actions will be performed if
 "terraform apply" is subsequently run.
+
+```
+
+もしすでに適用されているとすると以下のようなメッセージが出る
+```
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration and found no differences, so no changes are needed.
 
 ```
 
@@ -312,7 +325,17 @@ aws_instance.web1: Creation complete after 31s [id=i-0a2edbaf3f18d8eb0]
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
-ちなみに一度立ち上がっている時にやっても反応しない
+ちなみに一度立ち上がっている時にやっても反応しない、以下のようなコマンドが出る
+
+```
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration and found no differences, so no changes are needed.
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+matsumotonoMacBook-ea:IaC matsumotonorio$ 
+
+```
 
 #### 4 terraform show
 

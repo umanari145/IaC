@@ -56,8 +56,9 @@ tfenv list
 #### 1 terraform init
 
 ec2.tfファイルとvariables.tfを作成し、一番最初に打つコマンド(何もないと動かない)<br>
-awsのアカウント情報などの初期化をしている<br>
-下記のようなメッセージが出ればOK
+awsのアカウント情報などの初期化をしている(composer installなどに近いイメージ)<br>
+下記のようなメッセージが出ればOK<br>
+また.terraformにライブラリがインストールされる
 ```
 
 Initializing the backend...
@@ -325,17 +326,7 @@ aws_instance.web1: Creation complete after 31s [id=i-0a2edbaf3f18d8eb0]
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
-ちなみに一度立ち上がっている時にやっても反応しない、以下のようなコマンドが出る
-
-```
-No changes. Your infrastructure matches the configuration.
-
-Terraform has compared your real infrastructure against your configuration and found no differences, so no changes are needed.
-
-Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
-matsumotonoMacBook-ea:IaC matsumotonorio$ 
-
-```
+この時点でterraform.tfstateが作られる(状態を管理?)
 
 #### 4 terraform show
 

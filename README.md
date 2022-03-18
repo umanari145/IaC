@@ -51,7 +51,14 @@ tfenv list
 
 下記のコマンドは全てterraformディレクトリにおりて実行する
 
-### terraform コマンド
+### ファイル構成
+- chart 構成をdrawioで保存
+- .terraform.lock.hcl ライブラリの状態保存
+- terraform.tfstate.* 状態のファイル
+- variables.tf awsアカウントの情報
+
+* ディレクトリ自体がプロジェクトのようなもの
+aws用に./awsを作った場合にはここでterraform (init|plan|apply|show)コマンドをとる
 
 #### 1 terraform init
 

@@ -1,3 +1,8 @@
+# 許可IPなど
+locals {
+  admit_ip  = "113.149.17.185"
+}
+
 #----------------------------------------
 # VPCの作成(一番外側のVPC)
 #----------------------------------------
@@ -65,9 +70,8 @@ resource "aws_security_group_rule" "inbound_http" {
   from_port   = 80
   to_port     = 80
   protocol    = "tcp"
-  cidr_blocks = [
-    "0.0.0.0/0"
-  ]
+  # 特定IPのみ許可
+  cidr_blocks = ["${local.admit_ip}/32"]
 
   # ここでweb_serverセキュリティグループに紐付け
   security_group_id = aws_security_group.web_server_sg.id
@@ -79,24 +83,7 @@ resource "aws_security_group_rule" "inbound_https" {
   from_port   = 443
   to_port     = 443
   protocol    = "tcp"
-  cidr_blocks = [
-    "0.0.0.0/0"
-  ]
-
-  # ここでweb_serverセキュリティグループに紐付け
-  security_group_id = aws_security_group.web_server_sg.id
-}
-
-
-# 22番ポート許可のインバウンドルール
-resource "aws_security_group_rule" "inbound_ssh" {
-  type        = "ingress"
-  from_port   = 22
-  to_port     = 22
-  protocol    = "tcp"
-  cidr_blocks = [
-    "0.0.0.0/0"
-  ]
+  cidr_blocks = ["${local.admit_ip}/32"]
 
   # ここでweb_serverセキュリティグループに紐付け
   security_group_id = aws_security_group.web_server_sg.id

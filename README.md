@@ -55,10 +55,9 @@ tfenv list
 - chart 構成をdrawioで保存
 - .terraform.lock.hcl ライブラリの状態保存
 - terraform.tfstate.* 状態のファイル(AWSの状態がここに保存される)
-- variables.tf awsアカウントの情報
+- provider.tf awsアカウントの情報
 - (aws)vpc ネットワーク関連(ゲートウェイ、ルートテーブル、サブネットマスク、セキュリティグループなど)
-
-
+- variables.tf(変数の格納)
 * ディレクトリ自体がプロジェクトのようなもの
 aws用に./awsを作った場合にはここでterraform (init|plan|apply|show)コマンドをとる
 

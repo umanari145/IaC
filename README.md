@@ -2,9 +2,9 @@
 
 ## terraform
 
-参考リンク
-https://qiita.com/bunty/items/5ceed66d334db0ff99e8
-
+参考リンク<br>
+https://qiita.com/bunty/items/5ceed66d334db0ff99e8<br>
+https://blog.dcs.co.jp/aws/20210401-terraformaws.html
 ### インストール
 
 terraform本体のインストール
@@ -51,11 +51,13 @@ tfenv list
 
 下記のコマンドは全てterraformディレクトリにおりて実行する
 
-### ファイル構成
+### ファイル構成(各プロバイダーごと)
 - chart 構成をdrawioで保存
 - .terraform.lock.hcl ライブラリの状態保存
-- terraform.tfstate.* 状態のファイル
+- terraform.tfstate.* 状態のファイル(AWSの状態がここに保存される)
 - variables.tf awsアカウントの情報
+- (aws)vpc ネットワーク関連(ゲートウェイ、ルートテーブル、サブネットマスク、セキュリティグループなど)
+
 
 * ディレクトリ自体がプロジェクトのようなもの
 aws用に./awsを作った場合にはここでterraform (init|plan|apply|show)コマンドをとる
@@ -98,9 +100,6 @@ awsアカウントの重複
 ```
 Error: Duplicate provider configuration
 ```
-
-.teffaform.locl.hcl
-このファイルが設定情報を保存しているようなイメージ(composer.jsonなど?)
 
 #### 2 terraform plan
 
@@ -213,12 +212,22 @@ can't guarantee that exactly these actions will be performed if
 
 ```
 
-もしすでに適用されているとすると以下のようなメッセージが出る
+もしすでに適用されているとすると以下のようなメッセージが出る(基本的にはterraform.tfstateとの差分を見ている)
 ```
 No changes. Your infrastructure matches the configuration.
 
 Terraform has compared your real infrastructure against your configuration and found no differences, so no changes are needed.
 
+```
+ちなみにエラーの場合は以下のようなメッセージが出る
+```
+╷
+│ Error: Reference to undeclared resource
+│ 
+│   on vpc.tf line 28, in resource "aws_route_table" "sample_rtb":
+│   28:     gateway_id = aws_internet_gateway.sample_igw.id
+│ 
+│ A managed resource "aws_internet_gateway" "sample_igw" has not been declared in the root module.
 ```
 
 #### 3 terraform apply
@@ -337,7 +346,7 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 
 #### 4 terraform show
 
-実際のインスタンスの状態を表示
+実際のリソースの状態を出力する(terraform.tfstateの中身をわかりやすく出力している)
 
 ```
 # aws_instance.web1:

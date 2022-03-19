@@ -1,3 +1,4 @@
 variables.tf
+provider.tf
 .terraform
 terraform.*

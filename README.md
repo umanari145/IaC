@@ -102,6 +102,8 @@ Error: Duplicate provider configuration
 
 #### 2 terraform plan
 
+オプション `-var-file ***.tfvars`で変数を取り込むことができる
+
 構文チェックと新規に追加された要素の確認
 
 ```
@@ -229,7 +231,12 @@ Terraform has compared your real infrastructure against your configuration and f
 │ A managed resource "aws_internet_gateway" "sample_igw" has not been declared in the root module.
 ```
 
-#### 3 terraform apply
+#### 3 (sudo) terraform apply
+
+plan同様オプション `-var-file ***.tfvars`で変数を取り込むことができる
+
+
+権限変更などでsudoが必要なケースがある
 
 実際の実行。
 AWSの管理画面を見るとインスタンスが実際に立ち上がっている

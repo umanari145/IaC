@@ -7,6 +7,7 @@ resource "aws_instance" "sample-instance" {
     ami = data.aws_ssm_parameter.amzn2_ami.value
     instance_type = "t2.micro"
     subnet_id = aws_subnet.ec2_subnet.id
+    key_name = aws_key_pair.key_pair.id
     vpc_security_group_ids = [aws_security_group.web_server_sg.id]
     #↓これを入れないとそもそもパブリックIPが付与されないので注意
     associate_public_ip_address = true

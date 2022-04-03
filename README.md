@@ -414,9 +414,9 @@ aws_instance.web1: Destruction complete after 34s
 Destroy complete! Resources: 1 destroyed.
 ```
 
-ロードバランスについて
-https://www.isoroot.jp/blog/4584/
-
+ロードバランサーについて<br>
+https://www.isoroot.jp/blog/4584/<br>
+https://github.com/knakayama/tf-alb-demo<br>
 
 ### chart
 インフラ関連の図の資料
@@ -435,3 +435,10 @@ EC2_DB_diagram
 - Route table
 - EC2
 - RDS(MySQL)
+
+EC2_sample
+- VPC
+- Internet Gateway
+- Route table
+- ALB
+- EC2 × 2

@@ -58,6 +58,9 @@ tfenv list
 - provider.tf awsアカウントの情報
 - (aws)vpc ネットワーク関連(ゲートウェイ、ルートテーブル、サブネットマスク、セキュリティグループなど)
 - variables.tf(変数の格納)
+- ec2 ec2-Instanceコマンドについて
+- keygen 鍵の生成(秘密鍵と公開鍵キーペアの作成)
+- elb ロードバランサーの設定
 * ディレクトリ自体がプロジェクトのようなもの
 aws用に./awsを作った場合にはここでterraform (init|plan|apply|show)コマンドをとる
 
@@ -410,6 +413,10 @@ aws_instance.web1: Destruction complete after 34s
 
 Destroy complete! Resources: 1 destroyed.
 ```
+
+ロードバランスについて
+https://www.isoroot.jp/blog/4584/
+
 
 ### chart
 インフラ関連の図の資料

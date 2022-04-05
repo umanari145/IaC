@@ -71,69 +71,58 @@ resource "aws_route_table_association" "sample_web_rt_assoc" {
 resource "aws_security_group" "elb-sg" {
   name   = "elb-sg"
   vpc_id = aws_vpc.main.id
+
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["${local.admit_ip}/32"]
   }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["${local.admit_ip}/32"]
+  }
+
   egress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
-    security_groups = [aws_security_group.web_server_sg.id]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
-
 
 resource "aws_security_group" "web_server_sg" {
   name        = "web_server"
   vpc_id      = aws_vpc.main.id
-}
 
-# 80番ポート許可のインバウンドルール
-resource "aws_security_group_rule" "inbound_http" {
-  type        = "ingress"
-  from_port   = 80
-  to_port     = 80
-  protocol    = "tcp"
-  # 特定IPのみ許可
-  cidr_blocks = ["${local.admit_ip}/32"]
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-  # ここでweb_serverセキュリティグループに紐付け
-  security_group_id = aws_security_group.web_server_sg.id
-}
+  ingress {
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.elb-sg.id]
+  }
 
-# 443番ポート許可のインバウンドルール
-resource "aws_security_group_rule" "inbound_https" {
-  type        = "ingress"
-  from_port   = 443
-  to_port     = 443
-  protocol    = "tcp"
-  cidr_blocks = ["${local.admit_ip}/32"]
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.elb-sg.id]
+  }
 
-  # ここでweb_serverセキュリティグループに紐付け
-  security_group_id = aws_security_group.web_server_sg.id
-}
-
-# 22番ポート許可のインバウンドルール
-resource "aws_security_group_rule" "inbound_ssh" {
-  type        = "ingress"
-  from_port   = 22
-  to_port     = 22
-  protocol    = "tcp"
-  cidr_blocks = ["${local.admit_ip}/32"]
-
-  # ここでweb_serverセキュリティグループに紐付け
-  security_group_id = aws_security_group.web_server_sg.id
-}
-
-# アウトバウンドルール(全開放)
-resource "aws_security_group_rule" "out_all" {
-  security_group_id = aws_security_group.web_server_sg.id
-  type              = "egress"
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 0
-  to_port           = 0
-  protocol          = "-1"
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }

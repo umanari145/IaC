@@ -414,6 +414,15 @@ aws_instance.web1: Destruction complete after 34s
 Destroy complete! Resources: 1 destroyed.
 ```
 
+### tips
+
+特定のresourceを指定したいとき
+```
+terraform apply --target={リソース名}.{リソースにつけた独自の名前}
+# 例　terraform apply --target=aws_vpc.main
+```
+
+ ### 一般的なインフラネタ
 ロードバランサーについて<br>
 https://www.isoroot.jp/blog/4584/<br>
 https://github.com/knakayama/tf-alb-demo<br>

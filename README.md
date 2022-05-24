@@ -5,6 +5,11 @@
 参考リンク<br>
 https://qiita.com/bunty/items/5ceed66d334db0ff99e8<br>
 https://blog.dcs.co.jp/aws/20210401-terraformaws.html
+
+### ファイル構成
+.teffaorm.lock.hcl・・キャッシュファイル
+.terraform.tfstate・・現状の状況を記載(composer.lockに近い)
+
 ### インストール
 
 terraform本体のインストール

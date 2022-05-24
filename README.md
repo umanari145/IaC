@@ -353,9 +353,13 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 
 この時点でterraform.tfstateが作られる(状態を管理?)
 
-#### 4 terraform show
+#### 4 terraform show 
 
-実際のリソースの状態を出力する(terraform.tfstateの中身をわかりやすく出力している)
+実際のリソースの状態を出力する(terraform.tfstateの中身をわかりやすく出力している)<br>
+以下のようにリソースを指定することができる
+```
+terraform show aws_ecr_repository.ecr-nginx:
+```
 
 ```
 # aws_instance.web1:
@@ -414,6 +418,8 @@ aws_instance.web1: Destruction complete after 34s
 Destroy complete! Resources: 1 destroyed.
 ```
 
+
+
 ### tips
 
 特定のresourceを指定したいとき
@@ -421,6 +427,15 @@ Destroy complete! Resources: 1 destroyed.
 terraform apply --target={リソース名}.{リソースにつけた独自の名前}
 # 例　terraform apply --target=aws_vpc.main
 ```
+
+#### terraform state list リソース一覧
+```
+terraform state list 
+# tfstateで記載されている一覧を表示　以下例
+# aws_ecr_repository.ecr-nginx
+```
+
+
 
  ### 一般的なインフラネタ
 ロードバランサーについて<br>

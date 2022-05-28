@@ -13,3 +13,4 @@ resource "aws_ecs_cluster" "sample_ecs_cluster" {
     Name = "sample_ecs_cluster"
   }
 }
+

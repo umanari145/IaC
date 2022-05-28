@@ -429,7 +429,7 @@ Destroy complete! Resources: 1 destroyed.
 
 特定のresourceを指定したいとき
 ```
-terraform apply --target={リソース名}.{リソースにつけた独自の名前}
+terraform (plan)apply --target={リソース名}.{リソースにつけた独自の名前}
 # 例　terraform apply --target=aws_vpc.main
 ```
 

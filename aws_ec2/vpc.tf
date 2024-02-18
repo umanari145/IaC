@@ -71,7 +71,7 @@ resource "aws_route_table_association" "sample_web_rt_assoc" {
 resource "aws_security_group" "elb-sg" {
   name   = "elb-sg"
   vpc_id = aws_vpc.main.id
-龍薗
+
   ingress {
     from_port   = 80
     to_port     = 80

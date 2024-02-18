@@ -63,15 +63,26 @@ tfenv list
 
 ### ファイル構成(各プロバイダーごと)
 
+共通系
+
 - chart 構成を drawio で保存
 - .terraform.lock.hcl ライブラリの状態保存
 - terraform.tfstate.\* 状態のファイル(AWS の状態がここに保存される)
 - provider.tf aws アカウントの情報
-- (aws)vpc ネットワーク関連(ゲートウェイ、ルートテーブル、サブネットマスク、セキュリティグループなど)
 - variables.tf(変数の格納)
-- ec2 ec2-Instance コマンドについて
-- keygen 鍵の生成(秘密鍵と公開鍵キーペアの作成)
-- elb ロードバランサーの設定
+
+- aws_ec2
+
+  - vpc ネットワーク関連(ゲートウェイ、ルートテーブル、サブネットマスク、セキュリティグループなど)
+  - ec2 ec2-Instance コマンドについて
+  - keygen 鍵の生成(秘密鍵と公開鍵キーペアの作成)
+  - elb ロードバランサーの設定
+
+- aws_ecs
+  - ecr.tf
+  - ecs.tf
+  - iam.tf
+  - vpc.tf
 
 * ディレクトリ自体がプロジェクトのようなもの
   aws 用に./aws を作った場合にはここで terraform (init|plan|apply|show)コマンドをとる
@@ -121,7 +132,7 @@ Error: Duplicate provider configuration
 
 オプション `-var-file ***.tfvars`で変数を取り込むことができる
 
-構文チェックと新規に追加された要素の確認
+構文チェックと新規に追加された要素の確認(確認事項)
 
 ```
 provider.aws.region
@@ -444,6 +455,32 @@ Destroy complete! Resources: 1 destroyed.
 ```
 terraform (plan)apply --target={リソース名}.{リソースにつけた独自の名前}
 # 例　terraform apply --target=aws_vpc.main
+```
+
+複数の profile を使い分けたいとき(下記をセットしておく)
+
+```
+export AWS_PROFILE=<profile名>
+```
+
+Local Values とはモジュール内に閉じて使える変数。モジュール内でのローカル変数のようなもの。
+
+```
+# 許可IPなど(一般的には自分のIP)
+locals {
+  admit_ip  = "113.149.17.185"
+  azs = ["us-east-1a","us-east-1b"]
+  cidr_block = [
+    "10.0.1.0/24", "10.0.2.0/24"
+  ]
+}
+
+resource "aws_security_group" "elb-sg" {
+  ・・・・・
+  ingress {
+ 　　・・・・
+    cidr_blocks = ["${local.admit_ip}/32"]
+  }
 ```
 
 #### terraform state list リソース一覧

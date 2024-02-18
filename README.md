@@ -7,19 +7,22 @@ https://qiita.com/bunty/items/5ceed66d334db0ff99e8<br>
 https://blog.dcs.co.jp/aws/20210401-terraformaws.html
 
 ### ファイル構成
+
 .teffaorm.lock.hcl・・キャッシュファイル
-.terraform.tfstate・・現状の状況を記載(composer.lockに近い)
+.terraform.tfstate・・現状の状況を記載(composer.lock に近い)
 
 ### インストール
 
-terraform本体のインストール
+terraform 本体のインストール
+
 ```
 brew install terraform
 terraform --version
 #Terraform v0.12.26でOK
 ```
 
-tfenv(terraformのバージョン切り替え)
+tfenv(terraform のバージョン切り替え)
+
 ```
 #個別に元々インストールしていた場合は以下のコマンドでアンインストール
 brew unlink terraform
@@ -33,7 +36,7 @@ tfenv --version
 tfenv list-remote
 # バージョンがずらずらと・・
 #その中で選んでインストール
-tfenv install 1.0.0 
+tfenv install 1.0.0
 # インストールずみのバージョンを表記
 tfenv list
 #  1.0.0
@@ -46,35 +49,40 @@ tfenv list
 * 1.0.0 (set by /usr/local/Cellar/tfenv/2.2.2/version)
 ```
 
-### atomプラグイン
+### atom プラグイン
+
 - language-terraform:シンタックスハイライト(色つけ)
 - linter-terraform-syntax:構文チェック
 - terraform-fmt:整形ツール
 
 ### vscode
-- Draw.io Integration: drawをエディタ上に表現
 
-下記のコマンドは全てterraformディレクトリにおりて実行する
+- Draw.io Integration: draw をエディタ上に表現
+
+下記のコマンドは全て terraform ディレクトリにおりて実行する
 
 ### ファイル構成(各プロバイダーごと)
-- chart 構成をdrawioで保存
+
+- chart 構成を drawio で保存
 - .terraform.lock.hcl ライブラリの状態保存
-- terraform.tfstate.* 状態のファイル(AWSの状態がここに保存される)
-- provider.tf awsアカウントの情報
+- terraform.tfstate.\* 状態のファイル(AWS の状態がここに保存される)
+- provider.tf aws アカウントの情報
 - (aws)vpc ネットワーク関連(ゲートウェイ、ルートテーブル、サブネットマスク、セキュリティグループなど)
 - variables.tf(変数の格納)
-- ec2 ec2-Instanceコマンドについて
+- ec2 ec2-Instance コマンドについて
 - keygen 鍵の生成(秘密鍵と公開鍵キーペアの作成)
 - elb ロードバランサーの設定
+
 * ディレクトリ自体がプロジェクトのようなもの
-aws用に./awsを作った場合にはここでterraform (init|plan|apply|show)コマンドをとる
+  aws 用に./aws を作った場合にはここで terraform (init|plan|apply|show)コマンドをとる
 
 #### 1 terraform init
 
-ec2.tfファイルとvariables.tfを作成し、一番最初に打つコマンド(何もないと動かない)<br>
-awsのアカウント情報などの初期化をしている(composer installなどに近いイメージ)<br>
-下記のようなメッセージが出ればOK<br>
-また.terraformにライブラリがインストールされる
+ec2.tf ファイルと variables.tf を作成し、一番最初に打つコマンド(何もないと動かない)<br>
+aws のアカウント情報などの初期化をしている(composer install などに近いイメージ)<br>
+下記のようなメッセージが出れば OK<br>
+また.terraform にライブラリがインストールされる
+
 ```
 
 Initializing the backend...
@@ -102,8 +110,9 @@ rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 ```
 
-variable.tfなどが同階層にあると下記のようなエラーがでる<br>
-awsアカウントの重複
+variable.tf などが同階層にあると下記のようなエラーがでる<br>
+aws アカウントの重複
+
 ```
 Error: Duplicate provider configuration
 ```
@@ -221,33 +230,36 @@ can't guarantee that exactly these actions will be performed if
 
 ```
 
-もしすでに適用されているとすると以下のようなメッセージが出る(基本的にはterraform.tfstateとの差分を見ている)
+もしすでに適用されているとすると以下のようなメッセージが出る(基本的には terraform.tfstate との差分を見ている)
+
 ```
 No changes. Your infrastructure matches the configuration.
 
 Terraform has compared your real infrastructure against your configuration and found no differences, so no changes are needed.
 
 ```
+
 ちなみにエラーの場合は以下のようなメッセージが出る
+
 ```
 ╷
 │ Error: Reference to undeclared resource
-│ 
+│
 │   on vpc.tf line 28, in resource "aws_route_table" "sample_rtb":
 │   28:     gateway_id = aws_internet_gateway.sample_igw.id
-│ 
+│
 │ A managed resource "aws_internet_gateway" "sample_igw" has not been declared in the root module.
 ```
 
 #### 3 (sudo) terraform apply
 
-plan同様オプション `-var-file ***.tfvars`で変数を取り込むことができる
+plan 同様オプション `-var-file ***.tfvars`で変数を取り込むことができる
 
-
-権限変更などでsudoが必要なケースがある
+権限変更などで sudo が必要なケースがある
 
 実際の実行。
-AWSの管理画面を見るとインスタンスが実際に立ち上がっている
+AWS の管理画面を見るとインスタンスが実際に立ち上がっている
+
 ```
 provider.aws.region
   The region where AWS operations will take place. Examples
@@ -356,12 +368,13 @@ aws_instance.web1: Creation complete after 31s [id=i-0a2edbaf3f18d8eb0]
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
-この時点でterraform.tfstateが作られる(状態を管理?)
+この時点で terraform.tfstate が作られる(状態を管理?)
 
-#### 4 terraform show 
+#### 4 terraform show
 
-実際のリソースの状態を出力する(terraform.tfstateの中身をわかりやすく出力している)<br>
+実際のリソースの状態を出力する(terraform.tfstate の中身をわかりやすく出力している)<br>
 以下のようにリソースを指定することができる
+
 ```
 terraform show aws_ecr_repository.ecr-nginx:
 ```
@@ -376,6 +389,7 @@ resource "aws_instance" "web1" {
 
 既存のコードの消去<br>
 建てたものも完全に消去される
+
 ```
 provider.aws.region
   The region where AWS operations will take place. Examples
@@ -423,42 +437,43 @@ aws_instance.web1: Destruction complete after 34s
 Destroy complete! Resources: 1 destroyed.
 ```
 
-
-
 ### tips
 
-特定のresourceを指定したいとき
+特定の resource を指定したいとき
+
 ```
 terraform (plan)apply --target={リソース名}.{リソースにつけた独自の名前}
 # 例　terraform apply --target=aws_vpc.main
 ```
 
 #### terraform state list リソース一覧
+
 ```
-terraform state list 
+terraform state list
 # tfstateで記載されている一覧を表示　以下例
 # aws_ecr_repository.ecr-nginx
 ```
 
+### 一般的なインフラネタ
 
-
- ### 一般的なインフラネタ
 ロードバランサーについて<br>
 https://www.isoroot.jp/blog/4584/<br>
 https://github.com/knakayama/tf-alb-demo<br>
 
 ### chart
+
 インフラ関連の図の資料
 https://www.draw.io/
 
 VPC_diagram
+
 - VPC
 - Internet Gateway
 - Route table
 - EC2
 
-
 EC2_DB_diagram
+
 - VPC
 - Internet Gateway
 - Route table
@@ -466,8 +481,33 @@ EC2_DB_diagram
 - RDS(MySQL)
 
 EC2_sample
+
 - VPC
 - Internet Gateway
 - Route table
 - ALB
 - EC2 × 2
+
+## terraform validate
+
+設定情報がおかしくないかの確認
+
+╷
+│ Warning: Argument is deprecated
+│
+│ with aws_ecs_cluster.sample_ecs_cluster,
+│ on ecs.tf line 7, in resource "aws_ecs_cluster" "sample_ecs_cluster":
+│ 7: capacity_providers = [
+│ 8: "FARGATE",
+│ 9: "FARGATE_SPOT"
+│ 10: ]
+│
+│ Use the aws_ecs_cluster_capacity_providers resource instead
+╵
+╷
+│ Error: Reference to undeclared resource
+│
+│ on iam.tf line 38, in resource "aws_iam_role_policy_attachment" "ecs_task_execution":
+│ 38: role = aws_iam_role.ecs_task_execution_sample.name
+│
+│ A managed resource "aws_iam_role" "ecs_task_execution_sample" has not been declared in the root module.

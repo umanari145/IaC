@@ -16,13 +16,12 @@ PHP_FPM_IMAGE_TAG="latest"
 build_and_push_image() {
     local repo_name=$1
     local image_tag=$2
-    local docker_file=$3 # Dockerfile名
 
     # ECRリポジトリURIの設定
     local ecr_uri="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${repo_name}"
 
-    # Dockerイメージのビルド
-    docker build -t "${repo_name}:latest" "${docker_file}"
+    # Dockerイメージのビルド docker-compose や　docker-compose build --no-cacheで代替
+    # docker build -t "${repo_name}:latest" "${docker_file}"
 
     # ECRへのログイン
     aws ecr get-login-password | docker login --username AWS --password-stdin "${ecr_uri}"
@@ -36,8 +35,8 @@ build_and_push_image() {
 
 # NGINX DockerイメージのビルドとECRへのプッシュ
 # 第3引数にはNginxのDockerfileがあるディレクトリへのパスを指定してください
-build_and_push_image "${NGINX_REPO_NAME}" "${NGINX_IMAGE_TAG}" "./nginx"
+build_and_push_image "${NGINX_REPO_NAME}" "${NGINX_IMAGE_TAG}"
 
 # PHP-FPM DockerイメージのビルドとECRへのプッシュ
 # 第3引数にはPHP-FPMのDockerfileがあるディレクトリへのパスを指定してください
-build_and_push_image "${PHP_FPM_REPO_NAME}" "${PHP_FPM_IMAGE_TAG}" "./php-fpm"
+build_and_push_image "${PHP_FPM_REPO_NAME}" "${PHP_FPM_IMAGE_TAG}"

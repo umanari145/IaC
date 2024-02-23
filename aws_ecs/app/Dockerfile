@@ -4,7 +4,7 @@ FROM php:7.4-fpm
 # 作業ディレクトリを設定
 WORKDIR /var/www/html
 
-COPY ./index.php /var/www/html/index.php
+COPY ./src/ /var/www/html/
 
 # 必要なPHPの拡張機能をインストール
 RUN docker-php-ext-install pdo_mysql mysqli

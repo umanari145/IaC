@@ -1,0 +1,23 @@
+version: "3"
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+    ports:
+      - 8080:80
+    expose:
+      - 8080
+    depends_on:
+      - app
+    networks:
+      - app-network
+  app:
+    build:
+      context: .
+      dockerfile: ./app/Dockerfile
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge

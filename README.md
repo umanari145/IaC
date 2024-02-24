@@ -91,9 +91,10 @@ tfenv list
     - ecs.tf クラスター、サービス、タスクの登録
     - iam.tf ecs に必要な IAM
     - vpc.tf ネットワーク関連
-    - lb.tf ロードバランサー
 
 https://hi1280.hatenablog.com/entry/2023/04/07/200303
+
+https://qiita.com/Shoma0210/items/b998a260c5d18839fb7a
 
 - ディレクトリ自体がプロジェクトのようなもの
   aws 用に./aws を作った場合にはここで terraform (init|plan|apply|show)コマンドをとる
@@ -391,6 +392,8 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
 この時点で terraform.tfstate が作られる(状態を管理?)
+
+ファイルを更新して、apply をすると差分ができるので実行される
 
 #### 4 terraform show
 

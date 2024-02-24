@@ -20,9 +20,9 @@ build_and_push_image() {
     # ECRリポジトリURIの設定
     local ecr_uri="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${repo_name}"
 
-    # Dockerイメージのビルド docker-compose や　docker-compose build --no-cacheで代替
-    # docker build -t "${repo_name}:latest" "${docker_file}"
-
+    # nginx側　Dockerイメージのビルド docker-compose や　docker compose build --no-cacheで代替
+    # なぜかスクリプトで動かないので手動で
+    # docker build -t "${repo_name}:latest"　-f "${docker_file_dir}" .
     # ECRへのログイン
     aws ecr get-login-password | docker login --username AWS --password-stdin "${ecr_uri}"
 
@@ -39,4 +39,4 @@ build_and_push_image "${NGINX_REPO_NAME}" "${NGINX_IMAGE_TAG}"
 
 # PHP-FPM DockerイメージのビルドとECRへのプッシュ
 # 第3引数にはPHP-FPMのDockerfileがあるディレクトリへのパスを指定してください
-build_and_push_image "${PHP_FPM_REPO_NAME}" "${PHP_FPM_IMAGE_TAG}"
+#build_and_push_image "${PHP_FPM_REPO_NAME}" "${PHP_FPM_IMAGE_TAG}"

@@ -3,8 +3,8 @@ services:
   nginx:
     build:
       context: .
-      dockerfile: ./nginx/Dockerfile
-    image: nginx-repository
+      dockerfile: ./nginx/local/Dockerfile
+    image: nginx-local-repository
     ports:
       - 8080:80
     expose:

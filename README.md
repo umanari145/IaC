@@ -91,6 +91,7 @@ tfenv list
     - ecs.tf クラスター、サービス、タスクの登録
     - iam.tf ecs に必要な IAM
     - vpc.tf ネットワーク関連
+    - lb アプリケーションロードバランサー
 
 https://hi1280.hatenablog.com/entry/2023/04/07/200303
 

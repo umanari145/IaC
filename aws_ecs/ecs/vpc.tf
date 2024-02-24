@@ -37,41 +37,48 @@ resource "aws_route_table" "public" {
 #----------------------------------------
 # プライベートサブネットの作成
 #----------------------------------------
-resource "aws_subnet" "public" {
+resource "aws_subnet" "public1" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = "10.0.0.0/24"
+  cidr_block              = "10.0.1.0/24"
   availability_zone       = "us-east-1a"
   tags = {
-    Name = "ecs_public"
+    Name = "ecs_public1"
   }
 }
 
+resource "aws_subnet" "public2" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.2.0/24"
+  availability_zone       = "us-east-1b"
+  tags = {
+    Name = "ecs_public2"
+  }
+}
 #----------------------------------------
 # サブネットとルートテーブルを紐づけ
 #----------------------------------------
-resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public.id
+resource "aws_route_table_association" "public1" {
+  subnet_id      = aws_subnet.public1.id
   route_table_id = aws_route_table.public.id
 }
+
+resource "aws_route_table_association" "public2" {
+  subnet_id      = aws_subnet.public2.id
+  route_table_id = aws_route_table.public.id
+}
+
 #----------------------------------------
 # セキュリティグループの作成
 #----------------------------------------
-resource "aws_default_security_group" "default" {
+resource "aws_security_group" "public" {
   vpc_id = aws_vpc.main.id
-
-  ingress {
-    protocol  = -1
-    self      = true
-    from_port = 0
-    to_port   = 0
-
-  }
 
   ingress {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     from_port   = 80
     to_port     = 80
+    description = "Allow HTTP"
   }
 
   egress {
@@ -79,5 +86,10 @@ resource "aws_default_security_group" "default" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all outbound traffic"
+  }
+
+  tags = {
+    Name = "ecs_security_group"
   }
 }

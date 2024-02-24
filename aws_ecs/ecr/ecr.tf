@@ -8,9 +8,21 @@ locals {
 #----------------------------------------
 # ECRの作成
 #----------------------------------------
-resource "aws_ecr_repository" "webrepo" {
-  for_each = toset(local.repositories)
-  name     = each.value
+resource "aws_ecr_repository" "nginx-repository" {
+  name     = "nginx-repository"
+
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+  tags = {
+    Name = "webrepo"
+  }
+}
+
+resource "aws_ecr_repository" "php-fpm-repository" {
+  name     = "php-fpm-repository"
 
   image_tag_mutability = "MUTABLE"
 
@@ -25,27 +37,14 @@ resource "aws_ecr_repository" "webrepo" {
 #----------------------------------------
 # ECRのライフサイクル(直近3つまで)
 #----------------------------------------
-resource "aws_ecr_lifecycle_policy" "webrepo-policy" {
-  for_each   = toset(local.repositories)
-  repository = aws_ecr_repository.webrepo[each.key].name
-  policy = <<EOF
-{
-    "rules": [
-        {
-            "rulePriority": 1,
-            "description": "Keep last 3 images",
-            "selection": {
-                "tagStatus": "any",
-                "countType": "imageCountMoreThan",
-                "countNumber": 3
-            },
-            "action": {
-                "type": "expire"
-            }
-        }
-    ]
+resource "aws_ecr_lifecycle_policy" "nginx-policy" {
+  repository = aws_ecr_repository.nginx-repository.name
+  policy = file("${path.module}/aws_ecr_lifecycle_policy.json")
 }
-EOF
+
+resource "aws_ecr_lifecycle_policy" "php-fpm-policy" {
+  repository = aws_ecr_repository.php-fpm-repository.name
+  policy = file("${path.module}/aws_ecr_lifecycle_policy.json")
 }
 
 #----------------------------------------

@@ -79,12 +79,23 @@ tfenv list
   - elb ロードバランサーの設定
 
 - aws_ecs
-  - ecr.tf
-  - ecs.tf
-  - iam.tf
-  - vpc.tf
+  - ecr ecr の作成
+    - ecr.tf リポジトリ
+    - app nginx の Docker
+    - nginx web の Docker
+    - src 実際にデプロイされるファイル
+    - aws_ecr_lifecycle_policy ライフサイクルの json
+    - ecr_push.sh ECR のプッシュのシェル
+    - provider.tf (../provider.tf のシンボリックリンク)
+  - ecs ecs の作成
+    - ecs.tf クラスター、サービス、タスクの登録
+    - iam.tf ecs に必要な IAM
+    - vpc.tf ネットワーク関連
+    - lb.tf ロードバランサー
 
-* ディレクトリ自体がプロジェクトのようなもの
+https://hi1280.hatenablog.com/entry/2023/04/07/200303
+
+- ディレクトリ自体がプロジェクトのようなもの
   aws 用に./aws を作った場合にはここで terraform (init|plan|apply|show)コマンドをとる
 
 #### 1 terraform init
@@ -453,8 +464,10 @@ Destroy complete! Resources: 1 destroyed.
 特定の resource を指定したいとき
 
 ```
-terraform (plan)apply --target={リソース名}.{リソースにつけた独自の名前}
+terraform (plan or apply or delete) --target={リソース名}.{リソースにつけた独自の名前}
 # 例　terraform apply --target=aws_vpc.main
+
+
 ```
 
 複数の profile を使い分けたいとき(下記をセットしておく)

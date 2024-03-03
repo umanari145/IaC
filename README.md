@@ -546,6 +546,7 @@ EC2_sample
 
 設定情報がおかしくないかの確認
 
+```
 ╷
 │ Warning: Argument is deprecated
 │
@@ -565,3 +566,4 @@ EC2_sample
 │ 38: role = aws_iam_role.ecs_task_execution_sample.name
 │
 │ A managed resource "aws_iam_role" "ecs_task_execution_sample" has not been declared in the root module.
+```

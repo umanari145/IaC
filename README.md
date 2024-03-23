@@ -97,10 +97,31 @@ https://hi1280.hatenablog.com/entry/2023/04/07/200303
 
 https://qiita.com/Shoma0210/items/b998a260c5d18839fb7a
 
+- azure
+  provider でアカウント情報をコントロールするのではなく、az login 後おこなう(以下のようなページがでます)
+
+```
+[
+  {
+    "cloudName": "AzureCloud",
+    "managedByTenants": [],
+    "name": "Azure サブスクリプション 1",
+    "state": "Enabled",
+    "user": {
+    }
+  },
+  {
+
+  }
+]
+```
+
 - ディレクトリ自体がプロジェクトのようなもの
   aws 用に./aws を作った場合にはここで terraform (init|plan|apply|show)コマンドをとる
 
 #### 1 terraform init
+
+ディレクトリごとに行うため git に近い
 
 ec2.tf ファイルと variables.tf を作成し、一番最初に打つコマンド(何もないと動かない)<br>
 aws のアカウント情報などの初期化をしている(composer install などに近いイメージ)<br>

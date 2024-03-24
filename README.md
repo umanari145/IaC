@@ -98,7 +98,11 @@ https://hi1280.hatenablog.com/entry/2023/04/07/200303
 https://qiita.com/Shoma0210/items/b998a260c5d18839fb7a
 
 - azure
-  provider でアカウント情報をコントロールするのではなく、az login 後おこなう(以下のようなページがでます)
+
+  - main.tf (リソースグループ、Vnet、サブネット、パブリック IP、アプリケーションゲートウェイ)
+
+azure に関しては
+provider でアカウント情報をコントロールするのではなく、az login 後おこなう(以下のようなページがでます)
 
 ```
 [

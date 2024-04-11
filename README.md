@@ -592,3 +592,7 @@ EC2_sample
 │
 │ A managed resource "aws_iam_role" "ecs_task_execution_sample" has not been declared in the root module.
 ```
+
+## drawIO おすすめプラグイン
+
+drawIO Integration

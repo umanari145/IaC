@@ -567,6 +567,15 @@ EC2_sample
 - ALB
 - EC2 × 2
 
+ECS
+
+- VPC
+- Internet Gateway
+- Route table
+- ALB
+- EC2 × 2
+- Cloud Watch
+
 ## terraform validate
 
 設定情報がおかしくないかの確認
@@ -593,6 +602,114 @@ EC2_sample
 │ A managed resource "aws_iam_role" "ecs_task_execution_sample" has not been declared in the root module.
 ```
 
+## 変数
+
+### locals の定義と variable
+
+- locals・・ローカル変数で外部から変更負荷
+- variables・・外部から変更可能(コマンドライン実行時やファイル指定)
+
+local
+
+```
+locals {
+  project = "hogehoge"
+}
+
+resource <RESOURCE_TYPE> <RESOURCE_NAME> {
+  tags = "${local.project}-vpc"
+}
+
+```
+
+variable
+
+```
+variable "project" {
+  type = string
+  default = "hogehoge"
+}
+
+resource <RESOURCE_TYPE> <RESOURCE_NAME> {
+  tags = "${var.project}-vpc"
+}
+```
+
+変数の方としてはプリミティブ以外にオブジェクト型なども
+
+```
+variable "message" {
+  type = string
+  default = "test"
+}
+
+# オブジェクト
+variable "obj_sample" {
+  type = object({
+    name = string
+    age = number
+  })
+  default = {
+    name = "tanaka"
+    age = 28
+  }
+}
+
+参照時は
+var.obj_sample.name
+
+#リスト
+variable "list_sample" {
+  type = list(string)
+  default = ["tanaka", "sato]
+}
+
+var.list_sample[0]
+
+#map
+variable "map_sample" {
+  type = map(string)
+  default = {
+    "High" = "x2.large"
+    "Low" = "x2.nano"
+  }
+}
+var.map_sample.High
+```
+
+### 変数の上書き
+
+variables で定義してることを前提に・・・
+
+環境変数(TF*VAR*が接頭語)
+
+```
+export TF_VAR_message
+```
+
+変数ファイル
+
+\*\*\*.vfvars
+
+```
+message = "sample message"
+
+```
+
+-var での上書き
+
+```
+terraform apply - var message="sample message"
+```
+
+変数の優先度はコマンド引数>変数ファイル>環境変数
+
+### output と data
+
 ## drawIO おすすめプラグイン
 
 drawIO Integration
+
+## 参考教材
+
+「AWS と Terraform で実現する Infrastructure as Code」(https://www.udemy.com/course/iac-with-terraform/)

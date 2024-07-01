@@ -71,6 +71,10 @@ tfenv list
 - provider.tf aws アカウントの情報
 - variables.tf(変数の格納)
 
+- APIgateway
+
+  - APIgateway のサンプル
+
 - aws_ec2
 
   - vpc ネットワーク関連(ゲートウェイ、ルートテーブル、サブネットマスク、セキュリティグループなど)
@@ -97,7 +101,7 @@ https://hi1280.hatenablog.com/entry/2023/04/07/200303
 
 https://qiita.com/Shoma0210/items/b998a260c5d18839fb7a
 
-- azure
+- azure(やや頓挫気味)
 
   - main.tf (リソースグループ、Vnet、サブネット、パブリック IP、アプリケーションゲートウェイまで。ただし http_listener に関しては何度も作り直しが発行されてしまう。)
   - acr_aks.tf(別サービスが自動的に作られうまく紐づかない・・・のと失敗したのに aks が作例されてしまっている)
@@ -573,7 +577,7 @@ ECS
 - Internet Gateway
 - Route table
 - ALB
-- EC2 × 2
+- ECS
 - Cloud Watch
 
 ## terraform validate
@@ -706,6 +710,18 @@ terraform apply - var message="sample message"
 
 ### output と data
 
+## ECS に関して
+
+- オートスケーリングの設定の必要あり
+- スケーリングポリシー
+
+### 負荷テスト
+
+apache ベンチや JMeter など動的に負荷をかけられるサービスを使う
+
+総合試験でのテスト内容など(
+https://skill-up-engineering.com/2022/01/29/%e7%b7%8f%e5%90%88%e8%a9%a6%e9%a8%93%e3%81%a7%e3%81%ae%e3%83%86%e3%82%b9%e3%83%88%e5%86%85%e5%ae%b9%e3%81%aa%e3%81%a9/)
+
 ## drawIO おすすめプラグイン
 
 drawIO Integration
@@ -713,3 +729,4 @@ drawIO Integration
 ## 参考教材
 
 「AWS と Terraform で実現する Infrastructure as Code」(https://www.udemy.com/course/iac-with-terraform/)
+「AWS で Docker を本番運用！AmazonECS を使って低コストでコンテナを運用する実践コース」(https://www.udemy.com/course/ecsfargate/)

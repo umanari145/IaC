@@ -74,8 +74,10 @@ tfenv list
 - APIgateway
 
   - APIgateway のサンプル
-  - https://dev.classmethod.jp/articles/terraform-deployment-rest-api-gateway
-  - https://colabmix.co.jp/tech-blog/terraform-api-gateway/
+    - \*\*\_rest_api API 本体
+    - \*\*\_resource
+    - https://dev.classmethod.jp/articles/terraform-deployment-rest-api-gateway
+    - https://colabmix.co.jp/tech-blog/terraform-api-gateway/
 
 - aws_ec2
 

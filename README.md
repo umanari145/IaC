@@ -8,7 +8,7 @@ https://blog.dcs.co.jp/aws/20210401-terraformaws.html
 
 ### ファイル構成
 
-.teffaorm.lock.hcl・・キャッシュファイル
+.teffaorm.lock.hcl・・キャッシュファイル<br>
 .terraform.tfstate・・現状の状況を記載(composer.lock に近い)
 
 ### インストール
@@ -732,5 +732,5 @@ drawIO Integration
 
 ## 参考教材
 
-「AWS と Terraform で実現する Infrastructure as Code」(https://www.udemy.com/course/iac-with-terraform/)
+「AWS と Terraform で実現する Infrastructure as Code」(https://www.udemy.com/course/iac-with-terraform/)<br>
 「AWS で Docker を本番運用！AmazonECS を使って低コストでコンテナを運用する実践コース」(https://www.udemy.com/course/ecsfargate/)

@@ -730,6 +730,18 @@ https://skill-up-engineering.com/2022/01/29/%e7%b7%8f%e5%90%88%e8%a9%a6%e9%a8%93
 
 drawIO Integration
 
+## awspec
+
+インフラのテストツール
+<br>2024/07 現在の ruby bundler の version
+
+```
+root@7d4fac1b71bf:/home/app# ruby -v
+ruby 3.3.3 (2024-06-12 revision f1c7b6f435) [x86_64-linux]
+root@7d4fac1b71bf:/home/app# bundler -v
+Bundler version 2.5.11
+```
+
 ## 参考教材
 
 「AWS と Terraform で実現する Infrastructure as Code」(https://www.udemy.com/course/iac-with-terraform/)<br>

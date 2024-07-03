@@ -131,6 +131,20 @@ azure に関しては provider でアカウント情報をコントロールす�
 - ディレクトリ自体がプロジェクトのようなもの
   aws 用に./aws を作った場合にはここで terraform (init|plan|apply|show)コマンドをとる
 
+- cloudformation
+  - vpc.yaml
+
+### cloudformation
+
+cli コマンド<br>
+https://dev.classmethod.jp/articles/read-aws-cli-cfn-options/
+
+```
+aws cloudformation deploy \
+  --template-file vpc.yaml \
+  --stack-name mypvc
+```
+
 #### 1 terraform init
 
 ディレクトリごとに行うため git に近い

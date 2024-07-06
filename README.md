@@ -132,7 +132,7 @@ azure に関しては provider でアカウント情報をコントロールす�
   aws 用に./aws を作った場合にはここで terraform (init|plan|apply|show)コマンドをとる
 
 - cloudformation
-  - vpc.yaml
+  - main.yaml
 
 #### 1 terraform init
 
@@ -750,11 +750,13 @@ Bundler version 2.5.11
 cli コマンド<br>
 https://dev.classmethod.jp/articles/read-aws-cli-cfn-options/
 
+スタック・・単一のリソースではなく、リソースをグループ化したもの
+
 確認
 
 ```
 aws cloudformation validate-template \
- --template-body file://vpc.yaml
+ --template-body file://main.yaml
 
 # レスポンス
 {
@@ -766,20 +768,28 @@ aws cloudformation validate-template \
 
 ```
 aws cloudformation create-stack \
-  --template-body file://vpc.yaml \
-  --stack-name mypvc
+  --template-body file://main.yaml \
+  --stack-name mynetwork
 # レスポンス
 {
     "StackId": "arn:aws:cloudformation:us-west-1:xxxxx:stack/mypvc/zzzzzzzzz"
 }
 ```
 
+更新
+
+```
+aws cloudformation create-stack \
+
+
+```
+
 デプロイ
 
 ```
 aws cloudformation deploy \
-  --template-file vpc.yaml \
-  --stack-name mypvc
+  --template-file main.yaml \
+  --stack-name mynetwork
 
 Waiting for changeset to be created..
 Waiting for stack create/update to complete

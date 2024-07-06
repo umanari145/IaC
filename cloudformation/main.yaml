@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  #=================================
+  # メインのVPCの作成
+  #=================================
+  myVPC:
+    Type: AWS::EC2::VPC
+    # Deleteの場合、紐づくstackも消える
+    # Retaionの場合、残る
+    DeletionPolicy: "Delete"
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: "true" #これがあると名前解決できる
+      EnableDnsHostnames: "true" # パブリックDNSを持たせされる
+      Tags:
+        - Key: Name
+          Value: myVPC
+  #=================================
+  # インターネットゲートウェイの作成
+  #=================================
+  InternetGateway:
+    Type: "AWS::EC2::InternetGateway"
+    Properties:
+      Tags:
+        - Key: Name
+          Value: sample-legw
+
+  # gwとvpcの接続口
+  AttachGateway:
+    Type: "AWS::EC2::VPCGatewayAttachment"
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref myVPC
+  #=================================
+  # ルートテーブルの作成
+  #=================================
+  RouteTable:
+    Type: "AWS::EC2::RouteTable"
+    Properties:
+      Tags:
+        - Key: Name
+          Value: sample-rb
+      VpcId: !Ref myVPC
+
+  RouteTableAssociation01a: # ルートテーブルとsubnetのアタッチ
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties:
+      RouteTableId: !Ref RouteTable
+      SubnetId: !Ref Subnet01a
+
+  Route01:
+    Type: "AWS::EC2::Route"
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+      RouteTableId: !Ref RouteTable
+  #=================================
+  # サブネットの作成
+  #=================================
+  Subnet01a:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      AvailabilityZone: "us-west-1a"
+      CidrBlock: 10.0.0.0/24
+      Tags:
+        - Key: Name
+          Value: subnet01a
+      VpcId: !Ref myVPC

@@ -5,7 +5,7 @@ Resources:
   #=================================
   myVPC:
     Type: AWS::EC2::VPC
-    # Deleteの場合、紐づくstackも消える
+    # Deleteの場合、紐づくstackも消える(ディフォルト)
     # Retaionの場合、残る
     DeletionPolicy: "Delete"
     Properties:

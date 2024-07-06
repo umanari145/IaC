@@ -132,7 +132,7 @@ azure に関しては provider でアカウント情報をコントロールす�
   aws 用に./aws を作った場合にはここで terraform (init|plan|apply|show)コマンドをとる
 
 - cloudformation
-  - main.yaml
+  - main.yaml gw-rm-psn\*1 (gateway-routetable-Public Subnet1)
 
 #### 1 terraform init
 
@@ -779,8 +779,9 @@ aws cloudformation create-stack \
 更新
 
 ```
-aws cloudformation create-stack \
-
+aws cloudformation update-stack \
+  --template-body file://main.yaml \
+  --stack-name mynetwork
 
 ```
 
@@ -794,6 +795,19 @@ aws cloudformation deploy \
 Waiting for changeset to be created..
 Waiting for stack create/update to complete
 Successfully created/updated stack - mypvc
+```
+
+スタックの削除
+
+```
+aws cloudformation delete-stack --stack-name mynetwork --profile techpit
+
+```
+
+スタックの一覧
+
+```
+aws cloudformation describe-stacks
 ```
 
 ### テンプレート内部の変数について

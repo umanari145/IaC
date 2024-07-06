@@ -1,7 +1,29 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Resources:
-  FirstVPC:
+  #=================================
+  # メインのVPCの作成
+  #=================================
+  myVPC:
     Type: AWS::EC2::VPC
-    DeletionPolicy: "Retain"
+    # Deleteの場合、紐づくstackも消える
+    # Retaionの場合、残る
+    DeletionPolicy: "Delete"
     Properties:
       CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: "true" #これがあると名前解決できる
+      EnableDnsHostnames: "true" # パブリックDNSを持たせされる
+      Tags:
+        - Key: Name
+          Value: myVPC
+  #=================================
+  # サブネットの作成
+  #=================================
+  Subnet01a:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      AvailabilityZone: "us-west-1a"
+      CidrBlock: 10.0.0.0/24
+      Tags:
+        - Key: Name
+          Value: subnet01a
+      VpcId: !Ref myVPC

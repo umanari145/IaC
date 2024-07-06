@@ -134,17 +134,6 @@ azure に関しては provider でアカウント情報をコントロールす�
 - cloudformation
   - vpc.yaml
 
-### cloudformation
-
-cli コマンド<br>
-https://dev.classmethod.jp/articles/read-aws-cli-cfn-options/
-
-```
-aws cloudformation deploy \
-  --template-file vpc.yaml \
-  --stack-name mypvc
-```
-
 #### 1 terraform init
 
 ディレクトリごとに行うため git に近い
@@ -755,6 +744,66 @@ ruby 3.3.3 (2024-06-12 revision f1c7b6f435) [x86_64-linux]
 root@7d4fac1b71bf:/home/app# bundler -v
 Bundler version 2.5.11
 ```
+
+## cloudformation
+
+cli コマンド<br>
+https://dev.classmethod.jp/articles/read-aws-cli-cfn-options/
+
+確認
+
+```
+aws cloudformation validate-template \
+ --template-body file://vpc.yaml
+
+# レスポンス
+{
+    "Parameters": []
+}
+```
+
+作成
+
+```
+aws cloudformation create-stack \
+  --template-body file://vpc.yaml \
+  --stack-name mypvc
+# レスポンス
+{
+    "StackId": "arn:aws:cloudformation:us-west-1:xxxxx:stack/mypvc/zzzzzzzzz"
+}
+```
+
+デプロイ
+
+```
+aws cloudformation deploy \
+  --template-file vpc.yaml \
+  --stack-name mypvc
+
+Waiting for changeset to be created..
+Waiting for stack create/update to complete
+Successfully created/updated stack - mypvc
+```
+
+### テンプレート内部の変数について
+
+Ref 組み込み関数 Ref は、指定したパラメータまたはリソースの値
+
+例)
+!Ref 論理名
+パラメータの論理名を指定すると、それはパラメータの値<br>
+リソースの論理名を指定すると、それはそのリソースを参照するために通常使用できる値
+
+### ネットワークについて
+
+プレイベート IP<br>
+10.0.0.0 - 10.255.255.255 (10/8 プレフィックス)
+172.16.0.0 - 172.31.255.255 (172.16/12 プレフィックス)
+192.168.0.0 - 192.168.255.255 (192.168/16 プレフィックス)
+
+CIDR ブロックに関して<br>
+なるべく大きくとった方が多くの AWS リソースを格納できる
 
 ## 参考教材
 

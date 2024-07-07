@@ -777,7 +777,59 @@ aws cloudformation create-stack \
 }
 ```
 
-更新
+変更時は一気に更新するよりは変更セットを作ってみた方が差分が確認しやすい。
+
+変更セットを作成
+
+```
+aws cloudformation create-change-set \
+ --stack-name  mynetwork3 \
+ --template-body file://vpc.yaml  \
+ --change-set-name addSubnet
+
+# レスポンス
+{
+    "Id": "arn:aws:cloudformation:us-west-1:xxxx:changeSet/addSubnet/yyyy",
+    "StackId": "arn:aws:cloudformation:us-west-1:xxxx:stack/mynetwork3/yyyy"
+}
+```
+
+変更セットの確認(差分が確認できる)
+
+```
+aws cloudformation describe-change-set \
+  --change-set-name addSubnet \
+  --stack-name mynetwork3
+
+# レスポンス
+{
+    "Changes": [
+        {
+            "Type": "Resource",
+            "ResourceChange": {
+                "Action": "Add",
+                "LogicalResourceId": "RouteTable02a",
+                "ResourceType": "AWS::EC2::RouteTable",
+                "Scope": [],
+                "Details": []
+            }
+        },
+        {
+・・・・・・・・
+
+```
+
+変更セットの確定
+
+```
+aws cloudformation execute-change-set \
+ --change-set-name addSubnet \
+ --stack-name mynetwork3
+
+# レスポンスは特にない
+```
+
+一気に更新
 
 ```
 aws cloudformation update-stack \

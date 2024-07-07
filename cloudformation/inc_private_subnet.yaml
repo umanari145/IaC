@@ -32,7 +32,7 @@ Resources:
   Subnet01a:
     Type: "AWS::EC2::Subnet"
     Properties:
-      AvailabilityZone: "us-west-1"
+      AvailabilityZone: "us-west-1a"
       CidrBlock: 10.0.0.0/24
       Tags:
         - Key: Name
@@ -42,7 +42,7 @@ Resources:
   Subnet02a:
     Type: "AWS::EC2::Subnet"
     Properties:
-      AvailabilityZone: "us-west-1"
+      AvailabilityZone: "us-west-1a"
       CidrBlock: 10.0.1.0/24
       Tags:
         - Key: Name
@@ -52,7 +52,7 @@ Resources:
   Subnet03a:
     Type: "AWS::EC2::Subnet"
     Properties:
-      AvailabilityZone: "us-west-1"
+      AvailabilityZone: "us-west-1a"
       CidrBlock: 10.0.2.0/24
       Tags:
         - Key: Name

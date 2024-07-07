@@ -132,7 +132,8 @@ azure に関しては provider でアカウント情報をコントロールす�
   aws 用に./aws を作った場合にはここで terraform (init|plan|apply|show)コマンドをとる
 
 - cloudformation
-  - main.yaml gw-rm-psn\*1 (gateway-routetable-Public Subnet1)
+  - main.yaml gw-rm-psn\*1 (gateway-routetable-PublicSubnet1)
+  - inc_parivate_subnet.yaml(gatewa-routetab-le-PublicSubnet1-PrivateSubnet2 PrivateSubnet3 3 は孤立状態)
 
 #### 1 terraform init
 
@@ -800,7 +801,7 @@ Successfully created/updated stack - mypvc
 スタックの削除
 
 ```
-aws cloudformation delete-stack --stack-name mynetwork --profile techpit
+aws cloudformation delete-stack --stack-name mynetwork
 
 ```
 

@@ -1,0 +1,111 @@
+Resources:
+  #=================================
+  # VPCの作成
+  #=================================
+  VPC2:
+    Type: "AWS::EC2::VPC"
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: "true"
+      EnableDnsHostnames: "true"
+      Tags:
+        - Key: Name
+          Value: vpc2
+  #=================================
+  # インターネットゲートウェイの作成
+  #=================================
+  InternetGateway2:
+    Type: "AWS::EC2::InternetGateway"
+    Properties:
+      Tags:
+        - Key: Name
+          Value: gw2
+
+  AttachGateway:
+    Type: "AWS::EC2::VPCGatewayAttachment"
+    Properties:
+      InternetGatewayId: !Ref InternetGateway2
+      VpcId: !Ref VPC2
+  #=================================
+  # サブネットの作成
+  #=================================
+  Subnet01a:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      AvailabilityZone: "us-west-1"
+      CidrBlock: 10.0.0.0/24
+      Tags:
+        - Key: Name
+          Value: subnet01a
+      VpcId: !Ref VPC2
+
+  Subnet02a:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      AvailabilityZone: "us-west-1"
+      CidrBlock: 10.0.1.0/24
+      Tags:
+        - Key: Name
+          Value: subnet02a
+      VpcId: !Ref VPC2
+
+  Subnet03a:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      AvailabilityZone: "us-west-1"
+      CidrBlock: 10.0.2.0/24
+      Tags:
+        - Key: Name
+          Value: subnet03a
+      VpcId: !Ref VPC2
+  #=================================
+  # ルートテーブルの作成
+  #=================================
+  RouteTable01:
+    Type: "AWS::EC2::RouteTable"
+    Properties:
+      Tags:
+        - Key: Name
+          Value: rt01
+      VpcId: !Ref VPC2
+
+  RouteTableAssociation01a:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties:
+      RouteTableId: !Ref RouteTable01
+      SubnetId: !Ref Subnet01a
+
+  Route01:
+    Type: "AWS::EC2::Route"
+    Properties:
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway2
+      RouteTableId: !Ref RouteTable01
+
+  RouteTable02a:
+    Type: "AWS::EC2::RouteTable"
+    Properties:
+      VpcId: !Ref VPC2
+      Tags:
+        - Key: Name
+          Value: rt02
+
+  RouteTableAssociation02a:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties:
+      SubnetId: !Ref Subnet02a
+      RouteTableId: !Ref RouteTable02a
+
+  RouteTable03:
+    Type: "AWS::EC2::RouteTable"
+    Properties:
+      VpcId: !Ref VPC2
+      Tags:
+        - Key: Name
+          Value: rt03
+
+  RouteTableAssociation03a:
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties:
+      SubnetId: !Ref Subnet03a
+      RouteTableId: !Ref RouteTable03

@@ -588,6 +588,14 @@ ECS
 - ECS
 - Cloud Watch
 
+VPC_NAT
+
+- VPC
+- Internet Gateway
+- Route table
+- NAT
+- Subnet
+
 ## terraform validate
 
 設定情報がおかしくないかの確認
@@ -881,6 +889,15 @@ Ref 組み込み関数 Ref は、指定したパラメータまたはリソー�
 
 CIDR ブロックに関して<br>
 なるべく大きくとった方が多くの AWS リソースを格納できる
+
+インターネットゲートウェイと NAT ゲートウェイ<br>
+インターネットゲートウェイ・・VPC が外部と接続するために必要なコンポーネント<br>
+NAT ゲートウェイ・・プライベートサブネットから VPC 外に接続するために使用されるコンポーネント。<br>
+https://qiita.com/KWS_0901/items/8f818caaa4e989a185c5<br>
+https://milestone-of-se.nesuke.com/sv-advanced/aws/internet-nat-gateway/
+
+サブネットに関して
+https://www.stylez.co.jp/aws_columns/understand_the_basics_of_aws_networking/understanding_aws_public_subnets_and_private_subnets/
 
 ## 参考教材
 

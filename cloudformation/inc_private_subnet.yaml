@@ -1,3 +1,22 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "vpc including pulic subnet private subnet(associated Nat) private sbunet(isolate)"
+
+Parameters:
+  Project:
+    Type: String
+    Default: dummy
+    Description: Enter the project name.
+
+  Env:
+    Type: String
+    Default: staging
+    AllowedValues:
+      # enumに近い
+      - production
+      - development
+      - staging
+    Description: Enter the environment.
+
 Resources:
   #=================================
   # VPCの作成
@@ -10,7 +29,7 @@ Resources:
       EnableDnsHostnames: "true"
       Tags:
         - Key: Name
-          Value: vpc2
+          Value: !Join ["-", [!Ref Project, !Ref Env, vpc]]
   #=================================
   # インターネットゲートウェイの作成
   #=================================
@@ -19,13 +38,31 @@ Resources:
     Properties:
       Tags:
         - Key: Name
-          Value: gw2
+          Value: !Join ["-", [!Ref Project, !Ref Env, i-gw]]
 
   AttachGateway:
     Type: "AWS::EC2::VPCGatewayAttachment"
     Properties:
       InternetGatewayId: !Ref InternetGateway2
       VpcId: !Ref VPC2
+
+  #=================================
+  # NATゲートウェイの作成
+  #=================================
+  Natgw:
+    Type: "AWS::EC2::NatGateway"
+    Properties:
+      # 組み込み関数
+      AllocationId: !GetAtt EIPNata.AllocationId
+      SubnetId: !Ref Subnet01a
+      Tags:
+        - Key: Name
+          Value: !Join ["-", [!Ref Project, !Ref Env, nat-gw]]
+
+  EIPNata:
+    Type: "AWS::EC2::EIP"
+    Properties:
+      Domain: vpc
   #=================================
   # サブネットの作成
   #=================================
@@ -95,6 +132,13 @@ Resources:
     Properties:
       SubnetId: !Ref Subnet02a
       RouteTableId: !Ref RouteTable02a
+
+  Route02a:
+    Type: "AWS::EC2::Route"
+    Properties:
+      RouteTableId: !Ref RouteTable02a
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref Natgw
 
   RouteTable03:
     Type: "AWS::EC2::RouteTable"

@@ -724,7 +724,15 @@ terraform apply - var message="sample message"
 
 変数の優先度はコマンド引数>変数ファイル>環境変数
 
-### output と data
+### data
+
+すでに定義されている値を定数的に定義する
+
+```
+data"aws_iam_user""my_user"{
+  user_name="my_user_name"
+}
+```
 
 ## ECS に関して
 
@@ -901,5 +909,6 @@ https://www.stylez.co.jp/aws_columns/understand_the_basics_of_aws_networking/und
 
 ## 参考教材
 
+「」
 「AWS と Terraform で実現する Infrastructure as Code」(https://www.udemy.com/course/iac-with-terraform/)<br>
 「AWS で Docker を本番運用！AmazonECS を使って低コストでコンテナを運用する実践コース」(https://www.udemy.com/course/ecsfargate/)

@@ -907,8 +907,16 @@ https://milestone-of-se.nesuke.com/sv-advanced/aws/internet-nat-gateway/
 サブネットに関して
 https://www.stylez.co.jp/aws_columns/understand_the_basics_of_aws_networking/understanding_aws_public_subnets_and_private_subnets/
 
+### ポリシーについて
+
+基本的には付与したい複数の許可(ポリシー)をロールに集め、それをリソース(例 Stepfunction)に付与する感じ。<br>
+
+- AWS 管理ポリシー　・・AWS に元々付与されているポリシー(AmazonEC2FullAccess 等。)
+- カスタマー管理ポリシー・・ ユーザーが独自に作成するポシリーのこと
+- インラインポリシー・・ユーザー、グループ、ロールに埋め込まれたポリシー(他の IAM に付与できず特定の IAM 専属という感じ。CSS とイメージが近いかも)
+
 ## 参考教材
 
-「」
+「AWS CloudFormation を使って VPC 環境を構築してみよう！」(https://www.techpit.jp/courses/77)<br>
 「AWS と Terraform で実現する Infrastructure as Code」(https://www.udemy.com/course/iac-with-terraform/)<br>
 「AWS で Docker を本番運用！AmazonECS を使って低コストでコンテナを運用する実践コース」(https://www.udemy.com/course/ecsfargate/)

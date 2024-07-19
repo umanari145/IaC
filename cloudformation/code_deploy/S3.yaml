@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create S3 Bucket
+Parameters:
+  BucketName:
+    Type: String
+    Description: Name for BucketName
+
+Resources:
+  PortfolioBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${BucketName}-bucket"
+      # バージョニング(世代管理)
+      VersioningConfiguration:
+        Status: Enabled
+      # パブリックアクセスをブロック
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: True
+        BlockPublicPolicy: True
+        IgnorePublicAcls: True
+        RestrictPublicBuckets: True

@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Template to create an IAM Role for CodeDeploy
+
+Resources:
+  CodeDeployServiceRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: "CodeDeployServiceRole"
+      Description: "Allow CodeDeploy to call AWS all service"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "codedeploy.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"

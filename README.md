@@ -911,9 +911,71 @@ https://www.stylez.co.jp/aws_columns/understand_the_basics_of_aws_networking/und
 
 基本的には付与したい複数の許可(ポリシー)をロールに集め、それをリソース(例 Stepfunction)に付与する感じ。<br>
 
-- AWS 管理ポリシー　・・AWS に元々付与されているポリシー(AmazonEC2FullAccess 等。)
+- AWS 管理ポリシー(ManagedPolicy)　・・AWS に元々付与されているポリシー(AmazonEC2FullAccess 等。)
 - カスタマー管理ポリシー・・ ユーザーが独自に作成するポシリーのこと
-- インラインポリシー・・ユーザー、グループ、ロールに埋め込まれたポリシー(他の IAM に付与できず特定の IAM 専属という感じ。CSS とイメージが近いかも)
+- インラインポリシー・・ユーザー、グループ、ロールに埋め込まれたポリシー(他の IAM に付与できず特定の IAM 専属という感じ。インライン CSS とイメージが近いかも)
+
+ポシリー
+
+```
+  MyCustomPolicy:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: MyCustomPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow (Allow or Deny)
+            Action:
+              - 's3:ListBucket' (AWSサービス名:操作)
+              - 's3:GetObject'
+            Resource:
+              - 'arn:aws:s3:::example-bucket'　(適用される範囲)
+              - 'arn:aws:s3:::example-bucket/*'
+      Roles:
+        - Ref: MyExampleRole
+```
+
+### ロールについて
+
+ロール
+
+```
+  CodeDeployServiceRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: "CodeDeployServiceRole"
+      # CodeDeployが他のサービスにアクセスする
+      Description: "Allow CodeDeploy to call AWS all service"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "codedeploy.amazonaws.com" (CodeDeployサービスがこのロールを引き受けることを許可します。)
+            Action:
+              - "sts:AssumeRole" (このロールを引き受けるアクションを許可します。)
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole" (このロールにアタッチされる管理ポリシーのARN)
+
+```
+
+### サービスロール
+
+ユーザーに無制限に操作権限を与えるとまずいので、AWS のあるサービスに対して、別のサービスへの操作権限を許可
+https://qiita.com/sakuraya/items/920b9d0b549c8c412416<br>
+
+### CodeDeploy
+
+- cloudformation
+  - coude_deploy
+    - CodeDeploy.yaml
+    - IAM.yaml
+    - S3.yaml
+
+https://qiita.com/tsukapah/items/598ef327ccc51b4955b6<br>
+https://qiita.com/terukizm/items/e2c1400d129042868731
 
 ## 参考教材
 

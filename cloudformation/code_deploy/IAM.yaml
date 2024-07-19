@@ -2,6 +2,9 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Template to create an IAM Role for CodeDeploy
 
 Resources:
+  #=================================
+  # CodeDeployのロール
+  #=================================
   CodeDeployServiceRole:
     Type: "AWS::IAM::Role"
     Properties:
@@ -19,7 +22,9 @@ Resources:
               - "sts:AssumeRole"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
-
+  #=================================
+  # CodeDeployに付与予定(Ec2へのアクセス)
+  #=================================
   AccessToEC2:
     Type: "AWS::IAM::Policy"
     Properties:
@@ -29,9 +34,26 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - "s3:ListBucket"
-              - "s3:GetObject"
+              - "ec2:Describe*"
             Resource:
               - "*"
       Roles:
         - Ref: CodeDeployServiceRole
+  #=================================
+  # EC2→S3へのReadAccess
+  #=================================
+  EC2S3ReadOnlyRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: "EC2S3ReadOnlyRole"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "ec2.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"

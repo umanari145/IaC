@@ -6,6 +6,7 @@ Resources:
     Type: "AWS::IAM::Role"
     Properties:
       RoleName: "CodeDeployServiceRole"
+      # CodeDeployが他のサービスにアクセスする
       Description: "Allow CodeDeploy to call AWS all service"
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
@@ -18,3 +19,19 @@ Resources:
               - "sts:AssumeRole"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+
+  AccessToEC2:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: AccessToEC2
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "s3:ListBucket"
+              - "s3:GetObject"
+            Resource:
+              - "*"
+      Roles:
+        - Ref: CodeDeployServiceRole

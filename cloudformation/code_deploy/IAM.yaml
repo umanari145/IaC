@@ -22,6 +22,9 @@ Resources:
               - "sts:AssumeRole"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+      Tags:
+        - Key: group
+          Value: code-deploy
   #=================================
   # CodeDeployに付与予定(Ec2へのアクセス)
   #=================================
@@ -57,3 +60,6 @@ Resources:
               - "sts:AssumeRole"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+      Tags:
+        - Key: group
+          Value: code-deploy

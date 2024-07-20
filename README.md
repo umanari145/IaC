@@ -969,13 +969,37 @@ https://qiita.com/sakuraya/items/920b9d0b549c8c412416<br>
 ### CodeDeploy
 
 - cloudformation
-  - coude_deploy
+  - coude_deploy(EC 作成時には main.yaml で VPC をつくる)
+    - appspec.yaml
     - CodeDeploy.yaml
     - IAM.yaml
     - S3.yaml
 
 https://qiita.com/tsukapah/items/598ef327ccc51b4955b6<br>
-https://qiita.com/terukizm/items/e2c1400d129042868731
+https://qiita.com/terukizm/items/e2c1400d129042868731<br>
+https://jitera.com/ja/insights/9418
+
+```
+aws cloudformation create-stack \
+  --template-body file://IAM.yaml \
+  --stack-name code_deploy_IAM \
+  --capabilities CAPABILITY_NAMED_IAM
+
+ aws cloudformation create-stack \
+  --template-body file://S3.yaml \
+  --stack-name codeDeployS3
+```
+
+```
+
+```
+
+appspec とは・・・デプロイプロセスを定義するための設定ファイル<br>
+
+BeforeInstall: アプリケーションの新しいバージョンをインスタンスにコピーする前に実行されるスクリプト。<br>
+AfterInstall: アプリケーションの新しいバージョンがインスタンスにコピーされた後に実行されるスクリプト。<br>
+ApplicationStart: アプリケーションが開始された後に実行されるスクリプト。<br>
+ValidateService: デプロイが正常に完了したことを検証するために実行されるスクリプト。
 
 ## 参考教材
 

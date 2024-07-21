@@ -972,12 +972,17 @@ https://qiita.com/sakuraya/items/920b9d0b549c8c412416<br>
   - coude_deploy(EC 作成時には main.yaml で VPC をつくる)
     - appspec.yaml
     - CodeDeploy.yaml
+    - EC2
     - IAM.yaml
     - S3.yaml
 
+CodeDeploy<br>
 https://qiita.com/tsukapah/items/598ef327ccc51b4955b6<br>
 https://qiita.com/terukizm/items/e2c1400d129042868731<br>
 https://jitera.com/ja/insights/9418
+<br>
+EC2<br>
+https://qiita.com/tyoshitake/items/c5176c0ef4de8d7cf5d8<br>
 
 ```
 aws cloudformation create-stack \

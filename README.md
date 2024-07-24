@@ -879,6 +879,12 @@ aws cloudformation delete-stack --stack-name mynetwork
 aws cloudformation describe-stacks
 ```
 
+### modules
+
+パーツをこの部分で実装
+
+- sns_topic
+
 ### テンプレート内部の変数について
 
 Ref 組み込み関数 Ref は、指定したパラメータまたはリソースの値

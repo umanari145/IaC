@@ -881,9 +881,29 @@ aws cloudformation describe-stacks
 
 ### modules
 
+パーツ化して、別の箇所から呼び出す
+
+モジュール単位での指摘
 パーツをこの部分で実装
 
+- modules
+  - lambda
+    - main.tf
+    - variables.tf
+  - sns_topic
+    - main.tf
+    - variables.tf
 - sns_topic
+  - main.tf
+  - variables.tf
+  - terraform.tfvars
+
+モジュール指定での実行
+
+```
+terraform plan -target=module.lambda
+
+```
 
 ### テンプレート内部の変数について
 

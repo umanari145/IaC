@@ -962,6 +962,14 @@ https://www.stylez.co.jp/aws_columns/understand_the_basics_of_aws_networking/und
         - Ref: MyExampleRole
 ```
 
+### バケットポリシー
+
+S3 のバケットに関するルールを制御する。<br>
+もしロールにバケットに関するポリシーがかかれており、付与されていればいらない。
+(どちらか片方で良い。)<br>
+ただしクロスアカウント(異なるアカウント間でのバケットのやりとり)の場合、ロールとポリシー両方に権限の記載がなければいけない<br>
+https://www.bioerrorlog.work/entry/s3-bucket-policy-vs-iam-policy
+
 ### ロールについて
 
 ロール

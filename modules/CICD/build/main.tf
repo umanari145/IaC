@@ -48,6 +48,39 @@ resource "aws_s3_bucket" "codebuild_bucket" {
   bucket = "${var.project_pre}-my-codebuild-bucket"
 }
 
+resource "aws_s3_object" "artifacts" {
+  bucket = aws_s3_bucket.codebuild_bucket.id
+  key    = "artifacts/"
+}
+
+
+resource "aws_iam_policy" "codebuild_s3_policy" {
+  name        = "${var.project_pre}-CodeBuildS3AccessPolicy"
+  description = "Policy to allow CodeBuild to upload artifacts to S3"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:ListBucket"
+        ]
+        Effect   = "Allow"
+        Resource = [
+          "arn:aws:s3:::${var.project_pre}-my-codebuild-bucket",            # バケット自体へのアクセス
+          "arn:aws:s3:::${var.project_pre}-my-codebuild-bucket/*"           # バケット内のオブジェクトへのアクセス
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "codebuild_s3_policy_attachment" {
+  role       = aws_iam_role.codebuild_role.name
+  policy_arn = aws_iam_policy.codebuild_s3_policy.arn
+}
+
 # IAMポリシーをロールにアタッチ
 resource "aws_iam_role_policy_attachment" "codebuild_role_policy" {
   role       = aws_iam_role.codebuild_role.name
@@ -65,6 +98,8 @@ resource "aws_codebuild_project" "my_project" {
     type = "S3"
     location = aws_s3_bucket.codebuild_bucket.bucket
     packaging = "ZIP"
+    name = "output.zip"
+    path = "artifacts/"
   }
 
   environment {

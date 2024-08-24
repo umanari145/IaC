@@ -105,6 +105,11 @@ https://hi1280.hatenablog.com/entry/2023/04/07/200303
 
 https://qiita.com/Shoma0210/items/b998a260c5d18839fb7a
 
+- aws_cicd
+
+  - main.tf 実行ファイル
+  - variables.tf プロジェクトのプレフィックスなど
+
 - azure(やや頓挫気味)
 
   - main.tf (リソースグループ、Vnet、サブネット、パブリック IP、アプリケーションゲートウェイまで。ただし http_listener に関しては何度も作り直しが発行されてしまう。)
@@ -887,6 +892,10 @@ aws cloudformation describe-stacks
 パーツをこの部分で実装
 
 - modules
+  - CICD
+    - build
+      - main.tf
+      - variables.tf
   - lambda
     - main.tf
     - variables.tf

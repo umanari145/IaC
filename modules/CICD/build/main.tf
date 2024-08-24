@@ -16,6 +16,33 @@ resource "aws_iam_role" "codebuild_role" {
   })
 }
 
+resource "aws_iam_policy" "cloudwatch_logs_policy" {
+  name        = "${var.project_pre}-CloudWatchLogsPolicy"
+  description = "Allows access to specific CloudWatch Logs resources for CodeBuild"
+  
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = [
+          "*",
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_cloudwatch_logs_policy" {
+  role       = aws_iam_role.codebuild_role.name
+  policy_arn = aws_iam_policy.cloudwatch_logs_policy.arn
+}
+
 # S3バケットを作成（CodeBuildのアーティファクトを保存）
 resource "aws_s3_bucket" "codebuild_bucket" {
   bucket = "${var.project_pre}-my-codebuild-bucket"
@@ -53,13 +80,13 @@ resource "aws_codebuild_project" "my_project" {
   source {
     type      = "GITHUB"
     location  = "https://github.com/umanari145/phptips"
-    buildspec = "buildspec.yml"
+    buildspec = "buildspec.yaml"
   }
 
   logs_config {
     cloudwatch_logs {
       status = "ENABLED"
-      group_name = "codebuild-project-logs"
+      group_name = "${var.project_pre}/codebuild-project-logs"
       stream_name = "codebuild-log-stream"
     }
   }

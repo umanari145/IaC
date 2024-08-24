@@ -1,48 +1,3 @@
-# IAMロールを作成
-resource "aws_iam_role" "codebuild_role" {
-  name = "${var.project_pre}-codebuild-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action    = "sts:AssumeRole"
-        Effect    = "Allow"
-        Principal = {
-          Service = "codebuild.amazonaws.com"
-        }
-      },
-    ]
-  })
-}
-
-resource "aws_iam_policy" "cloudwatch_logs_policy" {
-  name        = "${var.project_pre}-CloudWatchLogsPolicy"
-  description = "Allows access to specific CloudWatch Logs resources for CodeBuild"
-  
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
-        ]
-        Resource = [
-          "*",
-        ]
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "attach_cloudwatch_logs_policy" {
-  role       = aws_iam_role.codebuild_role.name
-  policy_arn = aws_iam_policy.cloudwatch_logs_policy.arn
-}
-
 # S3バケットを作成（CodeBuildのアーティファクトを保存）
 resource "aws_s3_bucket" "codebuild_bucket" {
   bucket = "${var.project_pre}-my-codebuild-bucket"
@@ -52,7 +7,6 @@ resource "aws_s3_object" "artifacts" {
   bucket = aws_s3_bucket.codebuild_bucket.id
   key    = "artifacts/"
 }
-
 
 resource "aws_iam_policy" "codebuild_s3_policy" {
   name        = "${var.project_pre}-CodeBuildS3AccessPolicy"
@@ -77,29 +31,23 @@ resource "aws_iam_policy" "codebuild_s3_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild_s3_policy_attachment" {
-  role       = aws_iam_role.codebuild_role.name
+  role       = var.codebuild_role_name
   policy_arn = aws_iam_policy.codebuild_s3_policy.arn
-}
-
-# IAMポリシーをロールにアタッチ
-resource "aws_iam_role_policy_attachment" "codebuild_role_policy" {
-  role       = aws_iam_role.codebuild_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
 }
 
 # CodeBuildプロジェクトを作成
 resource "aws_codebuild_project" "my_project" {
   name          = "${var.project_pre}-CodeBuildProject"
   description   = "Sample CodeBuild project"
-  service_role  = aws_iam_role.codebuild_role.arn
+  service_role  = var.codebuild_role_arn
   build_timeout = 20
 
   artifacts {
-    type = "S3"
-    location = aws_s3_bucket.codebuild_bucket.bucket
+    type      = "S3"
+    location  = aws_s3_bucket.codebuild_bucket.bucket
     packaging = "ZIP"
-    name = "output.zip"
-    path = "artifacts/"
+    name      = "output.zip"
+    path      = "artifacts/"
   }
 
   environment {

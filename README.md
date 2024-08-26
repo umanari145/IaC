@@ -896,6 +896,9 @@ aws cloudformation describe-stacks
     - build
       - main.tf
       - variables.tf
+    - deploy
+      - main.tf
+      - variables.tf
   - lambda
     - main.tf
     - variables.tf
@@ -1048,6 +1051,14 @@ BeforeInstall: アプリケーションの新しいバージョンをインス�
 AfterInstall: アプリケーションの新しいバージョンがインスタンスにコピーされた後に実行されるスクリプト。<br>
 ApplicationStart: アプリケーションが開始された後に実行されるスクリプト。<br>
 ValidateService: デプロイが正常に完了したことを検証するために実行されるスクリプト。
+
+## CICD がらみ
+
+https://qiita.com/suiwave/items/e37338031c07e4dee52a#tf%E3%82%B3%E3%83%BC%E3%83%89-1
+https://qiita.com/okubot55/items/3cbeb4acb0ffa9ddd961
+https://github.com/okubo-t/aws-tf-fargate-blue-green-deploy
+https://qiita.com/suzuki0430/items/8b6e99669a8d4242a5ce
+https://qiita.com/tarian/items/75064f7c33bebcd5ace4
 
 ## 参考教材
 

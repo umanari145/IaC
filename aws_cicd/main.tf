@@ -27,11 +27,12 @@ module "ECS" {
 #  project_pre = var.project_pre
 #}
 
-module "CICD-Build-Condition" {
-  source = "../modules/CICD/deploy/container"
-  project_pre = var.project_pre
-  ecs_cluster_name = module.ECS.ecs_cluster_name
-  ecs_service_name = module.ECS.ecs_service_name
-  lb_tag_arn = module.LB.lb_tag_arn
-  lb_name = module.LB.lb_name
-}
+#module "CICD-Build-Condition" {
+#  source = "../modules/CICD/deploy/container"
+#  project_pre = var.project_pre
+#  ecs_cluster_name = module.ECS.ecs_cluster_name
+#  ecs_service_name = module.ECS.ecs_service_name
+#  blue_tag_arn = module.LB.blue_tag_arn
+#  green_tag_arn = module.LB.green_tag_arn
+#  lb_name = module.LB.lb_name
+#}

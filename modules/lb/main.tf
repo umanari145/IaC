@@ -18,11 +18,36 @@ resource "aws_lb_listener" "this" {
   }
 }
 
-resource "aws_lb_target_group" "this" {
-  name     = "${var.project_pre}-tg"
+resource "aws_lb_target_group" "blue" {
+  name     = "${var.project_pre}-tg-blue"
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
   target_type = "ip"
+  health_check {
+    protocol            = "HTTP"
+    path                = "/"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 3
+    unhealthy_threshold = 2
+    matcher             = 200
+  }
 }
 
+resource "aws_lb_target_group" "green" {
+  name     = "${var.project_pre}-tg-green"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = var.vpc_id
+  target_type = "ip"
+  health_check {
+    protocol            = "HTTP"
+    path                = "/"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 3
+    unhealthy_threshold = 2
+    matcher             = 200
+  }
+}

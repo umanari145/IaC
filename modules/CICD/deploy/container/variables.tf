@@ -10,14 +10,14 @@ variable "ecs_service_name" {
   type = string
 }
 
-variable "blue_tag_arn" {
+variable "lb_listener_arn" {
   type = string
 }
 
-variable "green_tag_arn" {
+variable "blue_tag_name" {
   type = string
 }
 
-variable "lb_name" {
+variable "green_tag_name" {
   type = string
 }

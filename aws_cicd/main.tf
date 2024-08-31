@@ -21,6 +21,7 @@ module "ECS" {
   subnet_ids = module.VPC.subnet_ids
 }
 
+# buildはcommit時に適用するのでいらない・・・
 # ダミー的なProject(public.ecr.aws/docker/library/httpd)をつかっているのでbuildをskip
 #module "CICD-Build-Common" {
 #  source = "../modules/CICD/build/common"
@@ -36,3 +37,13 @@ module "ECS" {
 #  green_tag_arn = module.LB.green_tag_arn
 #  lb_name = module.LB.lb_name
 #}
+
+module "CodeDeploy" {
+  source = "../modules/CICD/deploy/container"
+  project_pre = var.project_pre
+  ecs_cluster_name = module.ECS.ecs_cluster_name
+  ecs_service_name = module.ECS.ecs_service_name
+  lb_listener_arn = module.LB.lb_listener_arn
+  blue_tag_name = module.LB.blue_tag_name
+  green_tag_name = module.LB.green_tag_name
+}

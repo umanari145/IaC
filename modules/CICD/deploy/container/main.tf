@@ -22,6 +22,12 @@ resource "aws_iam_role_policy_attachment" "codedeploy_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
 }
 
+# IAMポリシーをCodeDeployロールにアタッチ
+resource "aws_iam_role_policy_attachment" "codedeploy_for_ecs_policy_attachment" {
+  role       = aws_iam_role.codedeploy_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS"
+}
+
 # CodeDeployアプリケーションの作成
 resource "aws_codedeploy_app" "app_name" {
   name = "${var.project_pre}-codedeploy-app"
@@ -33,6 +39,11 @@ resource "aws_codedeploy_deployment_group" "ecs_deployment_group" {
   app_name               = aws_codedeploy_app.app_name.name
   deployment_config_name = "CodeDeployDefault.ECSAllAtOnce"
   service_role_arn       = aws_iam_role.codedeploy_role.arn
+
+  deployment_style {
+    deployment_option = "WITH_TRAFFIC_CONTROL"
+    deployment_type = "BLUE_GREEN"
+  }
 
   auto_rollback_configuration {
     enabled = true
@@ -51,29 +62,26 @@ resource "aws_codedeploy_deployment_group" "ecs_deployment_group" {
     }
   }
 
-  deployment_style {
-    deployment_option = "WITH_TRAFFIC_CONTROL"
-    deployment_type = "BLUE_GREEN"
-  }
-
   ecs_service {
     cluster_name = var.ecs_cluster_name
     service_name = var.ecs_service_name
   }
 
   load_balancer_info {
-    prod_traffic_route {
-      listener_arns = [
-        var.aws_lb_listener.arn
-      ]
-    }
+    target_group_pair_info {
+      prod_traffic_route {
+        listener_arns = [
+          var.lb_listener_arn
+        ]
+      }
     
-    target_group {
-      name = aws_lb_target_group.blue.name
-    } 
+      target_group {
+        name = var.blue_tag_name
+      }
 
-    target_group {
-      name = aws_lb_target_group.green.name
+      target_group {
+        name = var.green_tag_name
+      }
     }
   }
 }

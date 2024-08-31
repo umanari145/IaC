@@ -101,6 +101,7 @@ resource "aws_ecs_service" "this" {
   task_definition = aws_ecs_task_definition.this.arn
   desired_count = 2
   launch_type   = "FARGATE"
+
   network_configuration {
     subnets = var.subnet_ids
     security_groups = [
@@ -113,5 +114,9 @@ resource "aws_ecs_service" "this" {
     target_group_arn =  var.blue_tag_arn
     container_name   = "web-container"
     container_port   = 80
+  }
+
+  deployment_controller {
+    type = "CODE_DEPLOY"
   }
 }

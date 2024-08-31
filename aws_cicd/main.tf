@@ -14,29 +14,20 @@ module "LB" {
 module "ECS" {
   source = "../modules/ecs"
   project_pre = var.project_pre
-  ecr_uri = "public.ecr.aws/docker/library/httpd"
+  ecr_uri = var.ecr_uri
   blue_tag_arn = module.LB.blue_tag_arn
   green_tag_arn = module.LB.green_tag_arn
   security_group_id = module.VPC.security_group_id
   subnet_ids = module.VPC.subnet_ids
 }
 
-# buildはcommit時に適用するのでいらない・・・
-# ダミー的なProject(public.ecr.aws/docker/library/httpd)をつかっているのでbuildをskip
-#module "CICD-Build-Common" {
-#  source = "../modules/CICD/build/common"
-#  project_pre = var.project_pre
-#}
-
-#module "CICD-Build-Condition" {
-#  source = "../modules/CICD/deploy/container"
-#  project_pre = var.project_pre
-#  ecs_cluster_name = module.ECS.ecs_cluster_name
-#  ecs_service_name = module.ECS.ecs_service_name
-#  blue_tag_arn = module.LB.blue_tag_arn
-#  green_tag_arn = module.LB.green_tag_arn
-#  lb_name = module.LB.lb_name
-#}
+module "CodeBuild" {
+  source = "../modules/CICD/build"
+  project_pre = var.project_pre
+  account_id = var.account_id
+  aws_region = var.aws_region
+  repo = var.repo
+}
 
 module "CodeDeploy" {
   source = "../modules/CICD/deploy/container"

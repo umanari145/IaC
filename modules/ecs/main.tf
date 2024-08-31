@@ -110,7 +110,7 @@ resource "aws_ecs_service" "this" {
   }
 
   load_balancer {
-    target_group_arn =  var.lb_tag_arn
+    target_group_arn =  var.blue_tag_arn
     container_name   = "web-container"
     container_port   = 80
   }

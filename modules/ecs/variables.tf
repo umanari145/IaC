@@ -14,6 +14,10 @@ variable "subnet_ids" {
   type = list
 }
 
-variable "lb_tag_arn" {
+variable "blue_tag_arn" {
+  type = string
+}
+
+variable "green_tag_arn" {
   type = string
 }

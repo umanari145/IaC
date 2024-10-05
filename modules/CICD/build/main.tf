@@ -101,17 +101,14 @@ resource "aws_codebuild_project" "my_project" {
   build_timeout = 20
 
   artifacts {
-    type            = "S3"
-    location        = aws_s3_bucket.codebuild_bucket.bucket
-    packaging       = "ZIP"
-    name            = "output.zip"
-    path            = "artifacts/"
+    type = "NO_ARTIFACTS"
   }
 
   environment {
     compute_type = "BUILD_GENERAL1_SMALL"
     image        = "aws/codebuild/standard:6.0"
     type         = "LINUX_CONTAINER"
+    image_pull_credentials_type = "CODEBUILD"
     privileged_mode = true
 
     environment_variable {

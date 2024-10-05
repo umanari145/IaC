@@ -158,21 +158,8 @@ Initializing provider plugins...
 The following providers do not have any version constraints in configuration,
 so the latest version was installed.
 
-To prevent automatic upgrades to new major versions that may contain breaking
-changes, it is recommended to add version = "..." constraints to the
-corresponding provider blocks in configuration, with the constraint strings
-suggested below.
+・・・・・・・・・・・・・・・・・・・・・・・
 
-* provider.aws: version = "~> 2.65"
-
-Terraform has been successfully initialized!
-
-You may now begin working with Terraform. Try running "terraform plan" to see
-any changes that are required for your infrastructure. All Terraform commands
-should now work.
-
-If you ever set or change modules or backend configuration for Terraform,
-rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 ```
 
@@ -222,7 +209,7 @@ can't guarantee that exactly these actions will be performed if
 
 ```
 
-もしすでに適用されているとすると以下のようなメッセージが出る(基本的には terraform.tfstate との差分を見ている)
+もしすでに適用されているとすると以下のようなメッセージが出る(基本的には terraform.tfstate と実機の差分を見ている)
 
 ```
 No changes. Your infrastructure matches the configuration.
@@ -366,8 +353,6 @@ Destroy complete! Resources: 1 destroyed.
 ```
 terraform (plan or apply or delete) --target={リソース名}.{リソースにつけた独自の名前}
 # 例　terraform apply --target=aws_vpc.main
-
-
 ```
 
 複数の profile を使い分けたいとき(下記をセットしておく)
@@ -498,7 +483,6 @@ locals {
 resource <RESOURCE_TYPE> <RESOURCE_NAME> {
   tags = "${local.project}-vpc"
 }
-
 ```
 
 variable
@@ -710,7 +694,6 @@ aws cloudformation execute-change-set \
 aws cloudformation update-stack \
   --template-body file://main.yaml \
   --stack-name mynetwork
-
 ```
 
 デプロイ
@@ -729,7 +712,6 @@ Successfully created/updated stack - mypvc
 
 ```
 aws cloudformation delete-stack --stack-name mynetwork
-
 ```
 
 スタックの一覧
@@ -858,7 +840,6 @@ https://www.bioerrorlog.work/entry/s3-bucket-policy-vs-iam-policy
               - "sts:AssumeRole" (このロールを引き受けるアクションを許可します。)
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole" (このロールにアタッチされる管理ポリシーのARN)
-
 ```
 
 ### サービスロール

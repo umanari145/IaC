@@ -116,7 +116,8 @@ resource "aws_ecs_service" "this" {
     container_port   = 80
   }
 
-  deployment_controller {
-    type = "CODE_DEPLOY"
-  }
+  # ecspressoを使う場合不要
+  #deployment_controller {
+  #  type = "CODE_DEPLOY"
+  #}
 }

@@ -13,6 +13,12 @@ resource "aws_iam_role" "lambda_exec" {
   })
 }
 
+resource "aws_iam_role_policy_attachment" "lambda_service_role_policy_attach" {
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+
 resource "aws_iam_role_policy" "lambda_exec_policy" {
   name   = "${var.function_name}_execution_policy"
   role   = aws_iam_role.lambda_exec.id
@@ -27,39 +33,26 @@ resource "aws_iam_role_policy" "lambda_exec_policy" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ],
-        "Resource": "*"
-      },
-      {
-        "Effect": "Allow",
-        "Action": [
-          "sns:Publish",
-          "sns:Subscribe"
-        ],
-        "Resource": "*"
+        "Resource": "arn:aws:logs:*:*:*"
       }
     ]
   })
 }
 
-resource "aws_lambda_function" "this" {
-  filename         = var.lambda_zip_path
-  function_name    = var.function_name
-  role             = aws_iam_role.lambda_exec.arn
-  handler          = var.handler
-  runtime          = var.runtime
-  source_code_hash = filebase64sha256(var.lambda_zip_path)
-
-  environment {
-    variables = var.environment_variables
-  }
+data "archive_file" "terraform_sorce" {
+  type        = "zip"
+  source_dir  = "lambda/test/src"
+  output_path = "lambda/test/src/test_terraform.zip"
 }
 
-resource "aws_lambda_permission" "sns_invocation" {
-  statement_id  = "AllowExecutionFromSNS"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.this.function_name
-  principal     = "sns.amazonaws.com"
-  source_arn    = var.sns_topic_arn
+# AWSへ作るlambda function
+resource "aws_lambda_function" "lambda_func" {
+  function_name    = ""
+  filename         = data.archive_file.terraform_sorce.output_path
+  source_code_hash = data.archive_file.terraform_sorce.output_base64sha256
+  runtime          = "python3.12"
+  role             = aws_iam_role.lambda_exec.arn
+  handler          = "terraform.handler"
 }
 
 output "lambda_arn" {

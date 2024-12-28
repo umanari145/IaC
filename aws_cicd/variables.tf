@@ -14,6 +14,6 @@ variable "aws_region" {
   type = string
 }
 
-variable "repo" {
-  type = string
-}
+#variable "repo" {
+#  type = string
+#}

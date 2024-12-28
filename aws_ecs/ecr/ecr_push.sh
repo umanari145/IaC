@@ -4,10 +4,6 @@
 NGINX_REPO_NAME="nginx-repository"
 PHP_FPM_REPO_NAME="php-fpm-repository"
 
-# AWSアカウントIDとデフォルトリージョンの取得
-AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
-AWS_DEFAULT_REGION=$(aws configure get region)
-
 # Dockerイメージのタグ名
 NGINX_IMAGE_TAG="latest"
 PHP_FPM_IMAGE_TAG="latest"
@@ -18,7 +14,7 @@ build_and_push_image() {
     local image_tag=$2
 
     # ECRリポジトリURIの設定
-    local ecr_uri="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${repo_name}"
+    local ecr_uri="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${repo_name}"
 
     # nginx側　Dockerイメージのビルド docker-compose や　docker compose build --no-cacheで代替
     # なぜかスクリプトで動かないので手動で

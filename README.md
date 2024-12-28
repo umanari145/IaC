@@ -105,10 +105,23 @@ https://hi1280.hatenablog.com/entry/2023/04/07/200303
 
 https://qiita.com/Shoma0210/items/b998a260c5d18839fb7a
 
-- aws_cicd
+- aws_cicd (ECR構築は別)
 
   - main.tf 実行ファイル
   - variables.tf プロジェクトのプレフィックスなど
+
+```
+#ecr構築
+cd aws_ecs/ecr
+terraform apply
+# ローカルコンテナ作成
+docker compose build --no-cache
+# awsの変数の読み込み後
+bash ecr_push.sh
+# vpc〜ecs構築
+cd aws_cicd
+terraform apply -var project_pre="*******" -var-file terraform.vfvars -lock=false
+```
 
 - azure(やや頓挫気味)
 
@@ -874,10 +887,6 @@ aws cloudformation create-stack \
  aws cloudformation create-stack \
   --template-body file://S3.yaml \
   --stack-name codeDeployS3
-```
-
-```
-
 ```
 
 appspec とは・・・デプロイプロセスを定義するための設定ファイル<br>
